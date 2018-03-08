@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
-  res.render('home/add_location_form', { title: 'Location Form' });
+  res.render('rooms/add_room_form', { title: 'Room Form' });
 });
 
 module.exports = router;

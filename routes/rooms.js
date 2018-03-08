@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+/* GET Rooms page. */
 router.get('/', function(req, res, next) {
-  res.render('home/add_location_form', { title: 'Location Form' });
+  res.render('rooms/rooms', { title: 'Room' });
 });
 
 module.exports = router;
