@@ -1,14 +1,13 @@
 extends ../layout
 
 block title
-    title Home
+    title Rooms
 
 block head
     link(rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.2/material.teal-amber.min.css")
-    //- link(rel='stylesheet', href='/stylesheets/home.css')
     link(rel='stylesheet', href='/stylesheets/cards.css')
 
 block content
     include ../nav_drawer.pug
-    include location_cards.pug
-    include add_location_fab.pug
+    include room_cards.pug
+    include add_room_fab.pug

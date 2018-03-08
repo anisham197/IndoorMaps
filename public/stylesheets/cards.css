@@ -38,10 +38,18 @@ height: 50px;
 /*line-height: 10px;*/
 }
 
-#add_fab{
+#add_location_fab, #add_building_fab, #add_room_fab{
   position: fixed;
 	left: 93%;
 	top: 87%;
 	background-color: #FFC107;
-    color: #FFFFFF;
+  color: #FFFFFF;
 }
+
+/* #add_building_fab{
+  position: fixed;
+	left: 93%;
+	top: 87%;
+	background-color: #FFC107;
+  color: #FFFFFF;
+} */
