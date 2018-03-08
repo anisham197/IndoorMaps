@@ -1,0 +1,22 @@
+head
+  link(rel="stylesheet", href="stylesheets/header.css")
+
+header.mdl-layout__header
+      .mdl-layout__header-row.search_bar
+        // Title
+        a#home(href="{{url_for('classroom.index')}}")
+          span.mdl-layout-title Laberinto
+        // Add spacer, to align navigation to the right
+        .mdl-layout-spacer
+        // Displayed on Computer and Tablet
+        // Search
+        .mdh-expandable-search.mdl-cell--hide-phone
+          i.material-icons search
+          form(action="#")
+            input(type="text" placeholder="Search" size="1")
+        // Displayed on mobile
+        .mdl-layout-spacer.mdl-cell--hide-tablet.mdl-cell--hide-desktop
+        // Search button
+        button.mdh-toggle-search.mdl-button.mdl-js-button.mdl-button--icon.mdl-cell--hide-tablet.mdl-cell--hide-desktop
+          i.material-icons search
+        include logout
