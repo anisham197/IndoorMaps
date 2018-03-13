@@ -1,0 +1,13 @@
+extends ../layout
+
+block title
+    title Buildings
+
+block head
+    link(rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.2/material.teal-amber.min.css")
+    link(rel='stylesheet', href='/stylesheets/cards.css')
+
+block content
+    include ../nav_drawer.pug
+    include building_cards.pug
+    include add_building_fab.pug

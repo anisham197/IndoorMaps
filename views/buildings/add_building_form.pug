@@ -1,0 +1,35 @@
+extends ../layout
+
+block title
+  title Building Form
+
+block head
+    link(rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.2/material.teal-amber.min.css")
+    link(rel='stylesheet', href='/stylesheets/form.css')
+
+block content
+    include ../nav_drawer.pug
+    
+    main#form_main.web-main.mdl-layout__content
+      br
+      br
+      br
+      .mdl-grid.portfolio-max-width
+        .mdl-cell.mdl-cell--4-col.mdl-cell--hide-tablet.mdl-cell--hide-phone
+        .mdl-cell.mdl-cell--4-col.mdl-card.mdl-shadow--4dp
+          #form_create_class
+            h3 Add a Building
+            form(method="POST" action="{{url_for(")
+              .mdl-textfield.mdl-js-textfield
+                input.mdl-textfield__input(type="text" name="location_name" placeholder="Name of the Building" required="")
+              .mdl-textfield.mdl-js-textfield
+                input.mdl-textfield__input(type="text" name="num_buildings" placeholder="No. of floors" required="")
+              .mdl-textfield.mdl-js-textfield
+                input.mdl-textfield__input(type="text" name="city" placeholder="No. of rooms" required="")
+              .mdl-textfield.mdl-js-textfield
+                textarea.mdl-textfield__input(type="text" rows="4" name="description" placeholder="Description" required="")
+              h5 Building ID : 34233242
+              br
+              input.rc-button.rc-button-submit(type="submit" value="Submit")
+            br
+
