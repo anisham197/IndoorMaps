@@ -1,7 +1,8 @@
 .page-content
       #page_body.grid
-        div
-          include location_card.pug
+        each loc in locations
+          div
+            include location_card.pug
         
         
       

@@ -11,17 +11,18 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
 
-  var userID = "";
+  var userID = '6y4JCw75hQWokw2Nqfl4lXGEl4H3';
 
   var data = {
     name: req.body.name,
     userID: userID,
     metadata:  {
+      numBuildings: req.body.number_buildings,
       city: req.body.city
     }
   };
   var setDoc = db.collection('locations').doc().set(data);
-  res.redirect( '/home');
+  res.redirect('/home');
 });
 
 module.exports = router;

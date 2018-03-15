@@ -1,55 +1,13 @@
 .mdl-card.mdl-shadow--2dp.demo-card-square
   .mdl-card__title.mdl-card--expand
-    h2.mdl-card__title-text Ramaiah Institute of Technology
+    h2.mdl-card__title-text #{loc.name}
   .mdl-card__supporting-text.text_area
     div
       b No. of buildings : 
-      | 5
+      | #{loc.buildings}
     div
-      b  No. of samples : 
-      | 180
-  .mdl-card__actions.mdl-card--border
-    a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href='/' + 'buildings')
-      | View
-
-.mdl-card.mdl-shadow--2dp.demo-card-square
-  .mdl-card__title.mdl-card--expand
-    h2.mdl-card__title-text Orion Mall
-  .mdl-card__supporting-text.text_area
-    div
-      b No. of buildings : 
-      | 1
-    div
-      b  No. of samples : 
-      | 560
-  .mdl-card__actions.mdl-card--border
-    a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href='/' + 'buildings')
-      | View
-
-.mdl-card.mdl-shadow--2dp.demo-card-square
-  .mdl-card__title.mdl-card--expand
-    h2.mdl-card__title-text R.V. College of Engineering
-  .mdl-card__supporting-text.text_area
-    div
-      b No. of buildings : 
-      | 6
-    div
-      b  No. of samples : 
-      | 220
-  .mdl-card__actions.mdl-card--border
-    a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href='/' + 'buildings')
-      | View
-
-.mdl-card.mdl-shadow--2dp.demo-card-square
-  .mdl-card__title.mdl-card--expand
-    h2.mdl-card__title-text Phoenix Marketcity
-  .mdl-card__supporting-text.text_area
-    div
-      b No. of buildings : 
-      | 1
-    div
-      b  No. of samples : 
-      | 660
+      b  City : 
+      | #{loc.city}
   .mdl-card__actions.mdl-card--border
     a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href='/' + 'buildings')
       | View
