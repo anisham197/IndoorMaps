@@ -1,4 +1,5 @@
 .page-content
       #page_body.grid
-        div
-          include room_card.pug
+        each room in rooms
+          div
+            include room_card.pug
