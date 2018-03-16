@@ -5,6 +5,13 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var admin = require('firebase-admin');
+var serviceAccount = require('./serviceAccountKey.json');
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+});
+
+
 var index = require('./routes/index');
 var home = require('./routes/home');
 var addlocation = require('./routes/add_location');

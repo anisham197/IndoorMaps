@@ -1,4 +1,5 @@
 .page-content
       #page_body.grid
-        div
-          include building_card.pug
+        each building in buildings
+          div
+            include building_card.pug
