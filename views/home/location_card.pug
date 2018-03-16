@@ -9,5 +9,7 @@
       b  City : 
       | #{loc.city}
   .mdl-card__actions.mdl-card--border
-    a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href='/' + 'buildings')
-      | View
+    form(method="POST" action="/buildings")
+      input(type="hidden" name="locationId" value="" + loc.locationId)
+      input.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(type="submit" value="View")
+    
