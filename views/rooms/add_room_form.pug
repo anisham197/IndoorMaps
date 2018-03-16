@@ -14,20 +14,17 @@ block content
       br
       br
       .mdl-grid.portfolio-max-width
-        .mdl-cell.mdl-cell--4-col.mdl-cell--hide-tablet.mdl-cell--hide-phone
-        .mdl-cell.mdl-cell--4-col.mdl-card.mdl-shadow--4dp
+        .mdl-cell.mdl-cell--6-col.mdl-cell--hide-tablet.mdl-cell--hide-phone
+        .mdl-cell.mdl-cell--6-col.mdl-card.mdl-shadow--4dp
           #form_create_class
             h3 Add a Room
-            form(method="POST" action="{{url_for(")
+            form(method="POST" action="/addroom")
               .mdl-textfield.mdl-js-textfield
-                input.mdl-textfield__input(type="text" name="location_name" placeholder="Name of the Room" required="")
+                input.mdl-textfield__input(type="text" name="name" placeholder="Room Name (Eg. Room 101)" required="")
               .mdl-textfield.mdl-js-textfield
-                input.mdl-textfield__input(type="text" name="num_buildings" placeholder="Floor No." required="")
+                input.mdl-textfield__input(type="text" name="label" placeholder="Room Label (Eg Audio Visual Room)" required="")
               .mdl-textfield.mdl-js-textfield
-                input.mdl-textfield__input(type="text" name="city" placeholder="Level No." required="")
-              .mdl-textfield.mdl-js-textfield
-                textarea.mdl-textfield__input(type="text" rows="4" name="description" placeholder="Description" required="")
-              h5 Room ID : 2423435
+                input.mdl-textfield__input(type="text" name="floor" placeholder="Floor No." required="")
               br
               input.rc-button.rc-button-submit(type="submit" value="Submit")
             br

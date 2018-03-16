@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var Location = require('../models/location.js')
+var Location = require('../models/location_model.js')
 
 var admin = require('firebase-admin');
 var db = admin.firestore();
@@ -9,9 +9,9 @@ var db = admin.firestore();
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-  var userID = '6y4JCw75hQWokw2Nqfl4lXGEl4H3';
+  var userId = '6y4JCw75hQWokw2Nqfl4lXGEl4H3';
   var locations = [];
-  var query = db.collection('locations').where('userID', '==', userID).get()
+  var query = db.collection('locations').where('userID', '==', userId).get()
     .then(snapshot => {
         snapshot.forEach(doc => {
             var loc = new Location(doc.id, doc.data().userID, doc.data().name, doc.data().metadata.city, doc.data().metadata.numBuildings);

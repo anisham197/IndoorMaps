@@ -1,98 +1,13 @@
 .mdl-card.mdl-shadow--2dp.demo-card-square
   .mdl-card__title.mdl-card--expand
-    h2.mdl-card__title-text LHC 311
+    h2.mdl-card__title-text #{room.name}
   .mdl-card__supporting-text.text_area
     div
       b  Room : 
-      | ISE 6A class
+      | #{room.label}
     div
       b Floor number : 
-      | 2
-  .mdl-card__actions.mdl-card--border
-    a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href="{{url_for('assignment.assign', class_code=class.class_code)}}")
-      | View
-
-.mdl-card.mdl-shadow--2dp.demo-card-square
-  .mdl-card__title.mdl-card--expand
-    h2.mdl-card__title-text LHC 310
-  .mdl-card__supporting-text.text_area
-    div
-      b  Room : 
-      | ISE 4C class
-    div
-      b Floor number : 
-      | 2
-  .mdl-card__actions.mdl-card--border
-    a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href="{{url_for('assignment.assign', class_code=class.class_code)}}")
-      | View
-
-
-.mdl-card.mdl-shadow--2dp.demo-card-square
-  .mdl-card__title.mdl-card--expand
-    h2.mdl-card__title-text LHC 309
-  .mdl-card__supporting-text.text_area
-    div
-      b  Room : 
-      | ISE 4B class
-    div
-      b Floor number : 
-      | 2
-  .mdl-card__actions.mdl-card--border
-    a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href="{{url_for('assignment.assign', class_code=class.class_code)}}")
-      | View
-
-.mdl-card.mdl-shadow--2dp.demo-card-square
-  .mdl-card__title.mdl-card--expand
-    h2.mdl-card__title-text LHC 308
-  .mdl-card__supporting-text.text_area
-    div
-      b  Room : 
-      | ISE 4A class
-    div
-      b Floor number : 
-      | 2
-  .mdl-card__actions.mdl-card--border
-    a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href="{{url_for('assignment.assign', class_code=class.class_code)}}")
-      | View
-
-.mdl-card.mdl-shadow--2dp.demo-card-square
-  .mdl-card__title.mdl-card--expand
-    h2.mdl-card__title-text LHC 404
-  .mdl-card__supporting-text.text_area
-    div
-      b  Room : 
-      | ISE 6B class
-    div
-      b Floor number : 
-      | 3
-  .mdl-card__actions.mdl-card--border
-    a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href="{{url_for('assignment.assign', class_code=class.class_code)}}")
-      | View
-
-.mdl-card.mdl-shadow--2dp.demo-card-square
-  .mdl-card__title.mdl-card--expand
-    h2.mdl-card__title-text LHC 411
-  .mdl-card__supporting-text.text_area
-    div
-      b  Room : 
-      | EC class
-    div
-      b Floor number : 
-      | 3
-  .mdl-card__actions.mdl-card--border
-    a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href="{{url_for('assignment.assign', class_code=class.class_code)}}")
-      | View
-
-.mdl-card.mdl-shadow--2dp.demo-card-square
-  .mdl-card__title.mdl-card--expand
-    h2.mdl-card__title-text LHC 211
-  .mdl-card__supporting-text.text_area
-    div
-      b  Room : 
-      | EEE class
-    div
-      b Floor number : 
-      | 1
+      | #{room.floor}
   .mdl-card__actions.mdl-card--border
     a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href="{{url_for('assignment.assign', class_code=class.class_code)}}")
       | View

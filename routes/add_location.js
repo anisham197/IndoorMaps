@@ -11,11 +11,11 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
 
-  var userID = '6y4JCw75hQWokw2Nqfl4lXGEl4H3';
+  var userId = '6y4JCw75hQWokw2Nqfl4lXGEl4H3';
 
   var data = {
     name: req.body.name,
-    userID: userID,
+    userId: userId,
     metadata:  {
       numBuildings: req.body.number_buildings,
       city: req.body.city
