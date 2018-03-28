@@ -4,3 +4,4 @@ npm-debug.log
 .settings
 .project
 serviceAccountKey.json
+app-env

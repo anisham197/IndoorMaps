@@ -11,14 +11,12 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
 
-
-var index = require('./routes/index');
-var home = require('./routes/home');
-var addlocation = require('./routes/add_location');
+var locations = require('./routes/locations');
+var addLocation = require('./routes/add_location');
 var buildings = require('./routes/buildings');
-var addbuilding = require('./routes/add_building');
+var addBuilding = require('./routes/add_building');
 var rooms = require('./routes/rooms');
-var addroom = require('./routes/add_room');
+var addRoom = require('./routes/add_room');
 
 var app = express();
 
@@ -34,13 +32,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/home', home);
-app.use('/addlocation', addlocation);
+app.use('/locations', locations);
+app.use('/addlocation', addLocation);
 app.use('/buildings', buildings);
-app.use('/addbuilding', addbuilding);
+app.use('/addbuilding', addBuilding);
 app.use('/rooms', rooms);
-app.use('/addroom', addroom);
+app.use('/addroom', addRoom);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

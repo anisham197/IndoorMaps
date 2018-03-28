@@ -9,8 +9,11 @@
       b  No. of rooms : 
       | 40
   .mdl-card__actions.mdl-card--border
-    a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href='/' + 'rooms')
-      | View
+    form(method="POST" action="/rooms")
+      input(type="hidden" name="buildingId" value="" + building.buildingId)
+      input.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(type="submit" value="View")
+    //- a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href='/' + 'rooms')
+    //-   | View
     a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href="{{url_for('assignment.assign', class_code=class.class_code)}}")
       | Add Floorplan
 
