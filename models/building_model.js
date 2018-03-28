@@ -1,11 +1,12 @@
 module.exports = class Building {
 
-    constructor (buildingId, locationId, userId, name, num_floors) {
+    constructor (buildingId, encryptId, locationId, name, numFloors,numRooms) {
         this.buildingId = buildingId;
+        this.encryptId = encryptId;
         this.locationId = locationId;
-        this.usrrId = userId;
         this.name = name;
-        this.num_floors = num_floors;
+        this.numFloors = numFloors;
+        this.numRooms = numRooms;
     }
 }
   

@@ -1,6 +1,5 @@
 div
-  //- a(href='/' + 'addbuilding')   
-  form(method="GET" action="/addbuilding")
-    input(type="hidden" name="id" value=""+locationId )
-    button#add_building_fab.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect.mdl-button--colored.md-fab-bottom-right(type="submit")
+  a(href='/addbuilding?id=' + locationId)
+    button#add_location_fab.mdl-button.mdl-js-button.mdl-button--fab.mdl-js-ripple-effect.mdl-button--colored.md-fab-bottom-right(type="button")
       i.material-icons add
+

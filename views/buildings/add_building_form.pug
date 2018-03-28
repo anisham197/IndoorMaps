@@ -18,15 +18,13 @@ block content
         .mdl-cell.mdl-cell--5-col.mdl-card.mdl-shadow--4dp
           #form_create_class
             h3 Add a Building
-            form(method="POST" action="/addbuilding/submit")
+            form(method="POST" action="/addbuilding")
               .mdl-textfield.mdl-js-textfield
                 input.mdl-textfield__input(type="text" name="building_name" placeholder="Name of the Building" required="")
               .mdl-textfield.mdl-js-textfield
                 input.mdl-textfield__input(type="text" name="num_floors" placeholder="No. of floors" required="")
-              //- .mdl-textfield.mdl-js-textfield
-              //-   input.mdl-textfield__input(type="text" name="city" placeholder="No. of rooms" required="")
-              //- .mdl-textfield.mdl-js-textfield
-              //-   textarea.mdl-textfield__input(type="text" rows="4" name="description" placeholder="Description" required="")
+              .mdl-textfield.mdl-js-textfield
+                input.mdl-textfield__input(type="text" name="num_rooms" placeholder="No. of rooms" required="")
               br
               input.rc-button.rc-button-submit(type="submit" value="Submit")
             br

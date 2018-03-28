@@ -8,7 +8,7 @@ global.userId;
 
 router.get('/', function(req, res, next) {
   global.userId = transform.decrypt(req.query.id);
-  res.render('locations/add_location_form', { title: 'Add Location'});
+  return res.render('locations/add_location_form', { title: 'Add Location'});
 });
 
 
@@ -22,7 +22,7 @@ router.post('/', function(req, res, next) {
     }
   };
   var setDoc = db.collection('locations').doc().set(data);
-  res.redirect('/locations');
+  return res.redirect('/locations');
 });
 
 module.exports = router;

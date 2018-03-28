@@ -7,12 +7,9 @@ var admin = require('firebase-admin');
 var db = admin.firestore();
 
 /* GET Rooms page. */
-router.post('/', function(req, res, next) {
+router.get('/', function(req, res, next) {
 
-  var userId = '6y4JCw75hQWokw2Nqfl4lXGEl4H3';
-  var locationId = 'nJeZn71ShzyQitMjicdK';
-  var buildingId = req.body.buildingId;
-  console.log('ID', buildingId);
+  var buildingId = transform.decrypt(req.query.id);
   var rooms = [];
 
   var query = db.collection('rooms').where('buildingId', '==', buildingId).get()
@@ -22,7 +19,7 @@ router.post('/', function(req, res, next) {
             rooms.push(room);            
         });
         console.log("" + rooms.length);
-        res.render('rooms/rooms', { title: 'Room', rooms: rooms});
+        return res.render('rooms/rooms', { title: 'Room', rooms: rooms});
     })
     .catch(err => {
         console.log('Error getting documents', err);
