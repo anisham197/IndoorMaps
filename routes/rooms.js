@@ -1,25 +1,25 @@
 var express = require('express');
 var router = express.Router();
 
-var Room = require('../models/room_model.js')
-
 var admin = require('firebase-admin');
 var db = admin.firestore();
+var Room = require('../models/room_model.js');
+
+var transform = require('../helpers.js');
 
 /* GET Rooms page. */
 router.get('/', function(req, res, next) {
-
-  var buildingId = transform.decrypt(req.query.id);
-  var rooms = [];
-
-  var query = db.collection('rooms').where('buildingId', '==', buildingId).get()
+    var encryptBuildingId = req.query.id;
+    var buildingId = transform.decrypt(encryptBuildingId);
+    
+    var rooms = [];
+    var query = db.collection('rooms').where('buildingId', '==', buildingId).get()
     .then(snapshot => {
         snapshot.forEach(doc => {
-            var room = new Room(doc.id, buildingId, locationId, userId, doc.data().name, doc.data().label, doc.data().metadata.floor);
+            var room = new Room(doc.id, buildingId, doc.data().name, doc.data().label, doc.data().metadata.floor);
             rooms.push(room);            
         });
-        console.log("" + rooms.length);
-        return res.render('rooms/rooms', { title: 'Room', rooms: rooms});
+        return res.render('rooms/room_main', { title: 'Rooms', rooms: rooms, buildingId: encryptBuildingId});
     })
     .catch(err => {
         console.log('Error getting documents', err);

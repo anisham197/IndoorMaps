@@ -19,14 +19,12 @@ router.get('/', function(req, res, next) {
           var encryptId = transform.encrypt(doc.id);
           var loc = new Location(doc.id, encryptId, doc.data().userId, doc.data().name, doc.data().metadata.city, doc.data().metadata.numBuildings);
           locations.push(loc);            
-      });
-      console.log("" + locations.length);       
+      });   
       return res.render('locations/location_main', { title: 'Locations', locations: locations, userId: encryptUserId } );      
   })
   .catch(err => {
       console.log('Error getting documents', err);
-  }); 
-
+  });
 });
 
 module.exports = router;
