@@ -1,7 +1,8 @@
 module.exports = class Location {
 
-    constructor (locationId, userId, name, city, buildings) {
+    constructor (locationId, encryptId, userId, name, city, buildings) {
         this.locationId = locationId;
+        this.encryptId = encryptId;
         this.userId = userId;
         this.name = name;
         this.city = city;

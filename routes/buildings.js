@@ -1,25 +1,26 @@
 var express = require('express');
 var router = express.Router();
 
-var Building = require('../models/building.js')
-
 var admin = require('firebase-admin');
 var db = admin.firestore();
+var Building = require('../models/building_model.js')
+
+var transform = require('../helpers.js');
 
 /* GET Buildings page. */
-router.post('/', function(req, res, next) {
+router.get('/', function(req, res, next) {
+    var encryptLocId = req.query.id;
+    var locationId = transform.decrypt(encryptLocId);
 
-  var locationID = req.body.locationId;
-  
-  var buildings = [];
-  console.log("\n\nloc id " + req.body.locationId);
-  var query = db.collection('buildings').where('locationID', '==', locationID).get()
+    var buildings = [];
+    var query = db.collection('buildings').where('locationId', '==', locationId).get()
     .then(snapshot => {
         snapshot.forEach(doc => {
-            var building = new Building(doc.id, doc.data().locationID, doc.data().name, doc.data().metadata.numFloors);
+            var encryptId = transform.encrypt(doc.id);
+            var building = new Building(doc.id, encryptId, doc.data().locationId, doc.data().name, doc.data().metadata.numFloors, doc.data().metadata.numRooms);
             buildings.push(building);            
         });
-        res.render('buildings/buildings', { title: 'Buildings', buildings: buildings});
+        return res.render('buildings/building_main', { title: 'Buildings', buildings: buildings, locationId: encryptLocId});
     })
     .catch(err => {
         console.log('Error getting documents', err);

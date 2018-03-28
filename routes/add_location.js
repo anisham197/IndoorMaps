@@ -3,26 +3,26 @@ var router = express.Router();
 
 var admin = require('firebase-admin');
 var db = admin.firestore();
+var transform = require('../helpers.js');
+global.userId;
 
 router.get('/', function(req, res, next) {
-  res.render('home/add_location_form', { title: 'Location Form' });
+  global.userId = transform.decrypt(req.query.id);
+  return res.render('locations/add_location_form', { title: 'Add Location'});
 });
 
 
 router.post('/', function(req, res, next) {
-
-  var userId = '6y4JCw75hQWokw2Nqfl4lXGEl4H3';
-
   var data = {
     name: req.body.name,
-    userId: userId,
+    userId: global.userId,
     metadata:  {
       numBuildings: req.body.number_buildings,
       city: req.body.city
     }
   };
   var setDoc = db.collection('locations').doc().set(data);
-  res.redirect('/home');
+  return res.redirect('/locations');
 });
 
 module.exports = router;
