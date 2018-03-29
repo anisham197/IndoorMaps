@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var admin = require('firebase-admin');
 var serviceAccount = require('./serviceAccountKey.json');
@@ -18,7 +19,6 @@ var buildings = require('./routes/buildings');
 var addBuilding = require('./routes/add_building');
 var rooms = require('./routes/rooms');
 var addRoom = require('./routes/add_room');
-var session = require('express-session');
 
 var app = express();
 
