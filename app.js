@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var admin = require('firebase-admin');
 var serviceAccount = require('./serviceAccountKey.json');
@@ -11,6 +12,7 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
 
+var login = require('./routes/auth');
 var locations = require('./routes/locations');
 var addLocation = require('./routes/add_location');
 var buildings = require('./routes/buildings');
@@ -31,7 +33,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(require('express-session')({
+  secret: 'aaasp18',
+  resave: false,
+  saveUninitialized: false
+}));
 
+app.use('/', login);
 app.use('/locations', locations);
 app.use('/addlocation', addLocation);
 app.use('/buildings', buildings);

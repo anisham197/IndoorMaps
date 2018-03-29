@@ -3,11 +3,14 @@ var router = express.Router();
 
 var admin = require('firebase-admin');
 var db = admin.firestore();
-var transform = require('../helpers.js');
+var helper = require('../helpers.js');
 global.locationId;
 
 router.get('/', function(req, res, next) {
-  global.locationId = transform.decrypt(req.query.id);
+  if(!helper.isAuthenticated(req, res)) {
+    return res.redirect("/");
+  }
+  global.locationId = helper.decrypt(req.query.id);
   return res.render('buildings/add_building_form', { title: 'Add Building' });
 });
 
@@ -21,7 +24,7 @@ router.post('/', function(req, res, next) {
     }
   };
   var setDoc = db.collection('buildings').doc().set(data);
-  return res.redirect('/buildings?id=' + transform.encrypt(global.locationId));
+  return res.redirect('/buildings?id=' + helper.encrypt(global.locationId));
 });
 
 module.exports = router;
