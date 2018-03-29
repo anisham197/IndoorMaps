@@ -23,6 +23,7 @@ router.get('/', function(req, res, next) {
             var building = new Building(doc.id, encryptId, doc.data().locationId, doc.data().name, doc.data().metadata.numFloors, doc.data().metadata.numRooms);
             buildings.push(building);            
         });
+        buildings.sort(helper.compare);
         return res.render('buildings/building_main', { title: 'Buildings', buildings: buildings, locationId: encryptLocId});
     })
     .catch(err => {
