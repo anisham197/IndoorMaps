@@ -5,12 +5,15 @@ var admin = require('firebase-admin');
 var db = admin.firestore();
 var Room = require('../models/room_model.js');
 
-var transform = require('../helpers.js');
+var helper = require('../helpers.js');
 
 /* GET Rooms page. */
 router.get('/', function(req, res, next) {
+    if(!helper.isAuthenticated(req, res)) {
+        return res.redirect("/");
+    }
     var encryptBuildingId = req.query.id;
-    var buildingId = transform.decrypt(encryptBuildingId);
+    var buildingId = helper.decrypt(encryptBuildingId);
     
     var rooms = [];
     var query = db.collection('rooms').where('buildingId', '==', buildingId).get()

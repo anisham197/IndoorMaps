@@ -5,18 +5,21 @@ var admin = require('firebase-admin');
 var db = admin.firestore();
 var Building = require('../models/building_model.js')
 
-var transform = require('../helpers.js');
+var helper = require('../helpers.js');
 
 /* GET Buildings page. */
 router.get('/', function(req, res, next) {
+    if(!helper.isAuthenticated(req, res)) {
+        return res.redirect("/");
+    }
     var encryptLocId = req.query.id;
-    var locationId = transform.decrypt(encryptLocId);
+    var locationId = helper.decrypt(encryptLocId);
 
     var buildings = [];
     var query = db.collection('buildings').where('locationId', '==', locationId).get()
     .then(snapshot => {
         snapshot.forEach(doc => {
-            var encryptId = transform.encrypt(doc.id);
+            var encryptId = helper.encrypt(doc.id);
             var building = new Building(doc.id, encryptId, doc.data().locationId, doc.data().name, doc.data().metadata.numFloors, doc.data().metadata.numRooms);
             buildings.push(building);            
         });

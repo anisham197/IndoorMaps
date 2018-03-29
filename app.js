@@ -11,12 +11,14 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
 
+var login = require('./routes/auth');
 var locations = require('./routes/locations');
 var addLocation = require('./routes/add_location');
 var buildings = require('./routes/buildings');
 var addBuilding = require('./routes/add_building');
 var rooms = require('./routes/rooms');
 var addRoom = require('./routes/add_room');
+var session = require('express-session');
 
 var app = express();
 
@@ -31,7 +33,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(require('express-session')({
+  secret: 'aaasp18',
+  resave: false,
+  saveUninitialized: false
+}));
 
+app.use('/', login);
 app.use('/locations', locations);
 app.use('/addlocation', addLocation);
 app.use('/buildings', buildings);
