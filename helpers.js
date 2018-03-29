@@ -26,9 +26,17 @@ var isAuthenticated = function (req, res) {
       console.log("user logged out");
       return false;
     }
-  }
+}
   
+var compare = function (a,b) { 
+  if (a.name < b.name) 
+    return -1;
+  if (a.name > b.name) 
+    return 1; 
+  return 0; 
+} 
 
 exports.encrypt = encrypt;
 exports.decrypt = decrypt;
+exports.compare = compare;
 exports.isAuthenticated = isAuthenticated;

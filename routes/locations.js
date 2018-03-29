@@ -26,7 +26,8 @@ router.get('/', function(req, res, next) {
           var encryptId = helper.encrypt(doc.id);
           var loc = new Location(doc.id, encryptId, doc.data().userId, doc.data().name, doc.data().metadata.city, doc.data().metadata.numBuildings);
           locations.push(loc);            
-      });   
+      }); 
+      locations.sort(helper.compare);  
       return res.render('locations/location_main', { title: 'Locations', locations: locations, userId: encryptUserId } );      
   })
   .catch(err => {
