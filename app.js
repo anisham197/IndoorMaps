@@ -19,6 +19,7 @@ var buildings = require('./routes/buildings');
 var addBuilding = require('./routes/add_building');
 var rooms = require('./routes/rooms');
 var addRoom = require('./routes/add_room');
+var addFloorplan = require('./routes/add_floorplan');
 
 var app = express();
 
@@ -46,6 +47,7 @@ app.use('/buildings', buildings);
 app.use('/addbuilding', addBuilding);
 app.use('/rooms', rooms);
 app.use('/addroom', addRoom);
+app.use('/addfloorplan', addFloorplan);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

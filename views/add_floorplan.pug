@@ -1,0 +1,38 @@
+extends layout
+
+block title
+    title Add Floorplan
+
+block head
+    link(rel='stylesheet', href='/stylesheets/addfloorplan.css')
+    script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAEd76xkK9HeABLRAe_9mCmoNLs6jc9Zu8&callback=initMap')
+
+block content
+    div#container
+      div#floorplan-form
+        p#building-name LHC
+        button.accordion Step 1
+        #panel
+            p Select 3 corners of building
+            br
+            p Southwest corner
+            input#sw_input(type='text', name='sw', disabled)
+            button#sw(onclick='myFunction(this)') Add
+            br
+            p Northwest corner
+            input#nw_input(type='text', name='nw', disabled)
+            button#nw(onclick='myFunction(this)') Add
+            br
+            p Northeast corner
+            input#ne_input(type='text', name='ne', disabled)
+            button#ne(onclick='myFunction(this)') Add
+            br
+            br
+        button.accordion Step 2
+        button.accordion Step 3
+      div#map
+    div(style='clear:both')
+
+block script
+    script(src='javascripts/floorplan_client.js')
+    
