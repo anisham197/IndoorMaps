@@ -1,0 +1,24 @@
+extends ../layout
+
+block title
+    title Add Floorplan
+
+block head
+    link(rel='stylesheet', href='/stylesheets/addfloorplan.css')
+    script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAEd76xkK9HeABLRAe_9mCmoNLs6jc9Zu8&callback=initMap')
+
+block content
+    div#container
+      div#floorplan-form
+        p#building-name #{building.name}
+        button.accordion Step 1
+        include add_coordinates
+        button.accordion Step 2
+        include upload_image
+        button.accordion Step 3
+      div#map
+    div(style='clear:both')
+
+block script
+    script(src='javascripts/floorplan_client.js')
+    

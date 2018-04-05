@@ -3,26 +3,29 @@ var markers = {sw : null, nw : null, ne : null};
 var latitude, longitude;
 var coordinates = {sw : null, nw : null, ne : null};
 
-function initMap() {
-  var location = {lat: 13.030713, lng: 77.564665};
-  // var styles = {
-  //   default: null,
-  //   hide: [
-  //     {
-  //       featureType: 'poi',
-  //       stylers: [{visibility: 'off'}]
-  //     }
-  //   ]
-  // };
-  map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 18,
-    center: location,
-    clickableIcons: false,
-    // styles: styles['hide']
+var acc = document.getElementsByClassName("accordion");
+for (var i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.maxHeight){
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    } 
   });
 }
 
-function myFunction(btnEvent) {
+function initMap() {
+  var location = {lat: 13.030713, lng: 77.564665};
+  map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 18,
+    center: location,
+    clickableIcons: false
+  });
+}
+
+function addCoordinates(btnEvent) {
   
   var mapListener = google.maps.event.addListener(map,'click',function(event) {
     latitude = event.latLng.lat();
@@ -55,17 +58,15 @@ function myFunction(btnEvent) {
 
 }
 
-var acc = document.getElementsByClassName("accordion");
+function floorSelected() {
+  var floorSelect = document.getElementById('floor-select');
+  var floorNum = floorSelect.options[floorSelect.selectedIndex].value;
 
-for (var i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var panel = this.nextElementSibling;
-    if (panel.style.maxHeight){
-      panel.style.maxHeight = null;
-    } else {
-      panel.style.maxHeight = panel.scrollHeight + "px";
-    } 
-  });
+  console.log("floor selected " + floorNum);
 }
 
+function uploadFloorplan(event) {
+  console.log(document.getElementById('image').files );
+  // var imagePath = document.getElementById('image').value
+
+}
