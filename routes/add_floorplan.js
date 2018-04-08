@@ -29,23 +29,33 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   var floorNum = req.body.floor;
+  console.log(req.body);
 
-   // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-   var floorplanImage = req.files.image;
- 
-   var dir = process.cwd() + '/floorplans';
-   if (!fs.existsSync(dir)){
-    fs.mkdirSync(dir);
+  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+  var floorplanImage = req.files.floorplanImage;
+  console.log(floorplanImage);
+
+  if(!floorplanImage){
+    res.status(400).send("Bad request");
   }
 
-   var filename = process.cwd() + '/floorplans/' + buildingId + '_' + floorNum + '.jpg';
-   // Use the mv() method to place the file somewhere on your server
-   floorplanImage.mv(filename, function(err) {
-     if (err)
-       return res.status(500).send(err);
-  
-     res.send('File uploaded!');
-   });
+  var dir = process.cwd() + '/floorplans';
+  if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+  }
+  var fileExt = floorplanImage.name.split('.').pop();
+
+  var filename = process.cwd() + '/floorplans/' + buildingId + '_' + floorNum + '.' + fileExt;
+  // Use the mv() method to place the file somewhere on your server
+  console.log(filename);
+  fs.writeFile(filename, floorplanImage.data, (err) => {
+    if (err){
+      console.log(err);
+      return res.status(500).send("Internal Server Error");
+    }
+    console.log("File saved");
+    res.send("Success");
+  });;
 
 });
 

@@ -3,18 +3,25 @@ var markers = {sw : null, nw : null, ne : null};
 var latitude, longitude;
 var coordinates = {sw : null, nw : null, ne : null};
 
-var acc = document.getElementsByClassName("accordion");
-for (var i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var panel = this.nextElementSibling;
-    if (panel.style.maxHeight){
-      panel.style.maxHeight = null;
-    } else {
-      panel.style.maxHeight = panel.scrollHeight + "px";
-    } 
-  });
-}
+$(document).ready(function(){
+  var acc = document.getElementsByClassName("accordion");
+
+  for (var i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var panel = this.nextElementSibling;
+      if (panel.style.maxHeight){
+        panel.style.maxHeight = null;
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      } 
+    });
+  }
+
+  $("#submitButton").click(uploadFloorplan);
+});
+
+
 
 function initMap() {
   var location = {lat: 13.030713, lng: 77.564665};
@@ -58,15 +65,41 @@ function addCoordinates(btnEvent) {
 
 }
 
-function floorSelected() {
+function getSelectedFloor() {
   var floorSelect = document.getElementById('floor-select');
   var floorNum = floorSelect.options[floorSelect.selectedIndex].value;
-
   console.log("floor selected " + floorNum);
+  return floorNum;
 }
 
-function uploadFloorplan(event) {
-  console.log(document.getElementById('image').files );
-  // var imagePath = document.getElementById('image').value
+function uploadFloorplan() {
+  var selectedFile = document.getElementById('image').files[0];
+  if(!selectedFile){
+    alert('Select a file first');
+    return;
+  }
+  console.log(selectedFile.toString());
+  var data = new FormData();
+  data.append('floorplanImage',selectedFile);
+  data.append('floor',getSelectedFloor());
 
+  jQuery.ajax({
+    url: '/addfloorplan',
+    data: data,
+    cache: false,
+    contentType: false,
+    processData: false,
+    method: 'POST',
+    type: 'POST', // For jQuery < 1.9
+    success: function(data){
+        console.log(data);
+        alert("Saved!");
+    },
+    error : function(error) {
+      console.log(error);
+      alert("Error! Try again later.");
+    }
+  });
 }
+
+google.maps.event.addDomListener(window, 'load', initMap);
