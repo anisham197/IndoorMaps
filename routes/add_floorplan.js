@@ -27,7 +27,8 @@ router.get('/', function(req, res, next) {
   });
 });
 
-router.post('/', function(req, res, next) {
+
+router.post('/uploadimages', function(req, res, next) {
   var floorNum = req.body.floor;
   console.log(req.body);
 
@@ -54,9 +55,15 @@ router.post('/', function(req, res, next) {
       return res.status(500).send("Internal Server Error");
     }
     console.log("File saved");
-    res.send("Success");
-  });;
+    res.send( {msg: "Success", filepath: filename} );
+  });
 
+});
+
+
+
+router.post('/savecoordinates', function(res, req,next) {
+  // save to firestore
 });
 
 module.exports = router;

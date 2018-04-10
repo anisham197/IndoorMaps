@@ -1,14 +1,13 @@
 #panel
   form(action="")
-    select#floor-select(name="floor" onchange="getSelectedFloor()")
+    select#select_floor(name="floor")
       option(value="" disabled selected hidden) Select Floor
       - for(var i = 1; i <= building.numFloors; i++) {
           option(value=i) #{i}
       - }
     br
     br
-    input#image(type='file' name="image" accept=".png, .jpg, .jpeg" required)
-    input(type="button" id="submitButton" value="Upload Floorplan")
-    //- button#upload(onclick='uploadFloorplan(i)') Upload Floorplan
+    input#image_file(type='file' name="image" accept=".png, .jpg, .jpeg" required)
+    input(type="button" id="floorplan_image_upload_btn" value="Upload Floorplan" disabled)
   br
   br
