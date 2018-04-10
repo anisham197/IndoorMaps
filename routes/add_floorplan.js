@@ -11,6 +11,10 @@ var helper = require('../helpers.js');
 var buildingId;
 
 router.get('/', function(req, res, next) {
+
+  // if(!helper.isAuthenticated(req, res)) {
+  //   return res.redirect("/");
+  // }
   var encryptBuildingId = req.query.id;
   buildingId = helper.decrypt(encryptBuildingId);
 
