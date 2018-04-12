@@ -1,6 +1,6 @@
 var polygon;
 var canvas;
-var isPolygonDragged = false;
+var beingDragged = false;
 var finalCoordinates;
 
 function displayFloorplan(imageFilepath, coordinates){
@@ -18,18 +18,19 @@ function displayFloorplan(imageFilepath, coordinates){
         strokeColor: "#BC1D0F",
         map: null,
         path: [],
-        draggable: false,
+        draggable: true,
         editable: true
     });
   
     polygon.addListener('dragstart', function(){
         // polygon was dragged
-        isPolygonDragged = true;
+        beingDragged = true;
     });
   
     polygon.addListener('dragend', function(){
         // Polygon was dragged
-        isPolygonDragged = false;
+        beingDragged = false;
+        //google.maps.event.trigger(poly.getPath(),'set_at');
     });
 
     google.maps.event.addListener(polygon, 'click', function () {
@@ -79,7 +80,7 @@ function displayFloorplan(imageFilepath, coordinates){
 
         google.maps.event.addListener(iPath, 'set_at', function(){
             // Point was moved
-            if(!isPolygonDragged){
+            if(!beingDragged){
                 console.log("set_at called");
                 console.log("Length: "+this.length);
  
@@ -87,11 +88,18 @@ function displayFloorplan(imageFilepath, coordinates){
                 nwLatLon = LatLon(this.getAt(1).lat(), this.getAt(1).lng());
                 neLatLon = LatLon(this.getAt(2).lat(), this.getAt(2).lng());
 
+                document.getElementById("sw_input" ).value= swLatLon.lat.toFixed(6) + " , " + swLatLon.lon.toFixed(6);
+                document.getElementById("nw_input" ).value= nwLatLon.lat.toFixed(6) + " , " + nwLatLon.lon.toFixed(6);
+                document.getElementById("ne_input" ).value= neLatLon.lat.toFixed(6) + " , " + neLatLon.lon.toFixed(6);
+
                 var iBearingY = nwLatLon.bearingTo(swLatLon);
                 var iBearingX = nwLatLon.bearingTo(neLatLon);
                 var iDistanceY = nwLatLon.distanceTo(swLatLon);
                 var iDistanceX = nwLatLon.distanceTo(neLatLon);
                 var seLatLon = neLatLon.destinationPoint(iBearingY, iDistanceY);
+
+
+                //this.setAt(3,new google.maps.LatLng(seLatLon.lat,seLatLon.lon)); // ends up triggering the set_at listener infinitely
 
                 var iPath = {
                     sw: {lat: swLatLon.lat, lng: swLatLon.lon},
@@ -99,6 +107,8 @@ function displayFloorplan(imageFilepath, coordinates){
                     ne: {lat: neLatLon.lat, lng: neLatLon.lon},
                     se: {lat: seLatLon.lat, lng: seLatLon.lon}
                 };
+
+
                 finalCoordinates = iPath;
 
                 canvas.setMap(null);
@@ -119,4 +129,17 @@ function displayFloorplan(imageFilepath, coordinates){
         {x: bearingX, y: bearingY},
         {sw: path[0], nw: path[1], ne: path[2], se: path[3]}
     );
+
+    clearMarkers();
+}
+
+function clearFloorPlan(){
+    if(canvas){
+        canvas.setMap(null);
+        canvas = null;
+    }
+    if(polygon){
+        polygon.setMap(null);
+        polygon = null;
+    }
 }

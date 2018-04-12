@@ -60,4 +60,20 @@ function saveCoordinates() {
     var acc = document.getElementsByClassName("accordion");
     acc[1].disabled = false;
 }
-  
+
+function clearMarkers(){
+  try {
+    if(markers.sw){
+      markers.sw.setMap(null);
+    }
+    if(markers.nw){
+      markers.nw.setMap(null);
+    }
+    if(markers.ne){
+      markers.ne.setMap(null);
+    }
+  }
+  catch(err) {
+      console.log("Could not clear markers");
+  }
+}

@@ -4,22 +4,24 @@ $("#select_floor").change(onFloorSelected);
 $("#floorplan_save_button").click(saveFloorplan);
 
 function onFloorSelected() {
+  clearFloorPlan();
   var selectFloor = document.getElementById('select_floor');
   floorNum = selectFloor.options[selectFloor.selectedIndex].value;
   document.getElementById('image_file').disabled = false;
 }
 
-function overlayFloorplan() {
-
+function overlayFloorplan(event) {
   document.getElementById('floorplan_save_button').disabled = false;
   selectedFile = document.getElementById('image_file').files[0];
   //save image to server
-  saveImage();
+  saveImage(function(){
+    event.target.value = '';
+  });
   // code to display map
   return;               
 }
   
-function saveImage() {
+function saveImage(callback) {
 
   var data = new FormData();
   data.append('floorplanImage',selectedFile);
@@ -39,6 +41,7 @@ function saveImage() {
       // code to display map
       imageFilepath = data.filepath;
       displayFloorplan(imageFilepath, coordinates);
+      callback();
     },
     error : function(error) {
       console.log(error);
@@ -63,6 +66,8 @@ function saveFloorplan() {
     type: 'POST', // For jQuery < 1.9
     success: function(data){
       console.log(data);
+      alert("Floor plan updated");
+      clearFloorPlan();
     },
     error : function(error) {
       console.log(error);
