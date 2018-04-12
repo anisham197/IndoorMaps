@@ -1,5 +1,6 @@
 var express = require('express');
 var fs = require('fs');
+var HashMap = require('hashmap');
 var router = express.Router();
 
 var admin = require('firebase-admin');
@@ -8,7 +9,7 @@ var Building = require('../models/building_model.js')
 
 var helper = require('../helpers.js');
 
-var buildingId;
+var buildingId, numFloors;
 
 router.get('/', function(req, res, next) {
 
@@ -21,6 +22,7 @@ router.get('/', function(req, res, next) {
   db.collection("buildings").doc(buildingId).get()
     .then(function(doc) {
       if (doc.exists) {
+        var numFloors = doc.data().metadata.numFloors;
           var building = new Building(doc.id, encryptBuildingId, doc.data().locationId, doc.data().name, doc.data().metadata.numFloors, doc.data().metadata.numRooms);
           return res.render('floorplan/add_floorplan', { title: 'Add floorplan', building: building });
       } else {
@@ -31,6 +33,77 @@ router.get('/', function(req, res, next) {
   });
 
   
+});
+
+router.get('/getBuildingInfo', function(req,res, next) {
+  var buildingId = req.query.id;
+  var object = {};
+  var floors = [];
+  var floormap = new HashMap();
+  db.collection('rooms').where('buildingId', '==', buildingId).get()
+    .then(snapshot => {
+        snapshot.forEach(doc => {
+          floorNum = doc.data().metadata.floor;
+          var room = {
+            roomId: doc.id,
+            roomName: doc.data().name 
+          };
+
+          var rooms = floormap.get(floorNum);
+          if(rooms == null)
+            rooms = [];
+          rooms.push(room);
+          floormap.set(floorNum, rooms);
+        });
+        floormap.forEach(function(value, key) {
+          floors.push({
+            'floorNum': key,
+            'rooms': value
+          })
+        });
+        // console.log(floors);
+        object = {
+          'numFloors': numFloors,
+          'floors': floors
+        };
+      console.log(object);
+      // console.log(object.floors[1]);
+    })
+    .catch(err => {
+        console.log('Error getting documents', err);
+    });
+  return object;
+});
+
+
+// Request body contains roomId and location 
+// Ex. data: { roomId: 4ijtMdXC96jyn9VhtRr8,
+//             location: {
+//                lat: 13.4454,
+//                lng: 77.343
+//              }
+//            }
+router.post('/saveRoomLoc', function(req, res, next) {
+  var object = JSON.parse(req.body.data);
+  var roomId = object.roomId;
+  var location = object.location;
+  var docRef = db.collection('rooms').doc(roomId);
+  docRef.get()
+    .then((docSnapshot) => {
+      if (docSnapshot.exists) {
+        docRef.update({
+          location: location
+        }).then(function() {
+            return res.status(200).send("Document successfully updated!");
+          }).catch(function(error) {
+          return res.status(500).send("Error updating document: ", error);
+        })
+      } else {
+        console.log("doc doesnt exist");
+      }
+  }).catch(function(error) {
+    return res.status(500).send("Error getting document: ", error);
+  });
 });
 
 
