@@ -16,8 +16,6 @@ $(document).ready(function(){
   }
   acc[1].disabled = true;
   acc[2].disabled = true;
-  
-  // $("#submitButton").click(uploadFloorplan);
 });
 
 
@@ -26,7 +24,13 @@ function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: 18,
     center: location,
-    clickableIcons: false
+    clickableIcons: false,
+    zoomControl: false,
+    mapTypeControl: false,
+    scaleControl: true,
+    streetViewControl: false,
+    rotateControl: true,
+    fullscreenControl: true
   });
 }
 
