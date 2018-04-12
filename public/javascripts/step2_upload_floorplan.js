@@ -11,6 +11,7 @@ function onFloorSelected() {
 }
 
 function overlayFloorplan(event) {
+  clearFloorPlan();
   document.getElementById('floorplan_save_button').disabled = false;
   selectedFile = document.getElementById('image_file').files[0];
   //save image to server
