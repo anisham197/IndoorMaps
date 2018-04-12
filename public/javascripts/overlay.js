@@ -1,12 +1,15 @@
 var polygon;
 var isPolygonDragged = false;
+var finalCoordinates;
+
 function displayFloorplan(imageFilepath, coordinates){
 
     console.log("displayFloorplan() function called");
+    console.log("filepath " + imageFilepath);
 
     var image = new Image();
     var canvas;
-    image.src = 'https://goflo.in/floorplan.png';
+    image.src = imageFilepath;
     
     polygon =  new google.maps.Polygon({
         fillColor: 'white',
@@ -42,6 +45,8 @@ function displayFloorplan(imageFilepath, coordinates){
     var distanceX = LatLon(coordinates.nw.lat, coordinates.nw.lng).distanceTo(LatLon(coordinates.ne.lat, coordinates.ne.lng));
     var se = LatLon(coordinates.ne.lat, coordinates.ne.lng).destinationPoint(bearingY, distanceY);
     var path = [coordinates.sw, coordinates.nw, coordinates.ne, {lat: se.lat, lng: se.lon}];
+
+    finalCoordinates = {sw: coordinates.sw, nw: coordinates.nw, ne: coordinates.ne, se: {lat: se.lat, lng: se.lon}};
         
     var bounds = new google.maps.LatLngBounds(
         // Lower Bound
@@ -93,6 +98,7 @@ function displayFloorplan(imageFilepath, coordinates){
                     ne: {lat: neLatLon.lat, lng: neLatLon.lon},
                     se: {lat: seLatLon.lat, lng: seLatLon.lon}
                 };
+                finalCoordinates = iPath;
 
                 canvas.setMap(null);
 

@@ -32,6 +32,25 @@ router.get('/', function(req, res, next) {
 });
 
 
+router.post('/savecoordinates', function(req, res, next) {
+
+  console.log(req.body);
+  console.log("\nbuildingID " + buildingId);
+  var object = JSON.parse(req.body.coordinates);
+  db.collection("coordinates").doc(buildingId).set({
+    sw: object.sw,
+    nw: object.nw,
+    ne: object.ne
+  })
+  .then(function() {
+    return res.status(200).send("Document successfully written!");
+  })
+  .catch(function(error) {
+    return res.status(500).send("Error writing document: ", error);
+  });
+});
+
+
 router.post('/uploadimages', function(req, res, next) {
   var floorNum = req.body.floor;
   console.log(req.body);
@@ -50,24 +69,41 @@ router.post('/uploadimages', function(req, res, next) {
   }
   var fileExt = floorplanImage.name.split('.').pop();
 
-  var filename = process.cwd() + '/floorplans/' + buildingId + '_' + floorNum + '.' + fileExt;
+  var filename = buildingId + '_' + floorNum + '.' + fileExt;
+  var filePath = process.cwd() + '/floorplans/' + filename;
+
+  console.log("\nfile path " + filePath);
+  
   // Use the mv() method to place the file somewhere on your server
   console.log(filename);
-  fs.writeFile(filename, floorplanImage.data, (err) => {
+  fs.writeFile(filePath, floorplanImage.data, (err) => {
     if (err){
       console.log(err);
       return res.status(500).send("Internal Server Error");
     }
     console.log("File saved");
-    res.send( {msg: "Success", filepath: filename} );
+    res.status(200).send( {msg: "Success", filepath: filename} );
   });
 
 });
 
 
+router.post('/savefloorplan', function(req, res,next) {
+  console.log(req.body);
+  var object = JSON.parse(req.body.data);
 
-router.post('/savecoordinates', function(res, req,next) {
-  // save to firestore
+  db.collection("floorplans").doc(buildingId).collection("floorNum").doc(object.floorNum).set({
+    imageFilepath: object.imageFilepath,
+    sw: object.coordinates.sw,
+    nw: object.coordinates.nw,
+    ne: object.coordinates.ne
+  })
+  .then(function() {
+    return res.status(200).send("Document successfully written!");
+  })
+  .catch(function(error) {
+    return res.status(500).send("Error writing document: ", error);
+  });
 });
 
 module.exports = router;
