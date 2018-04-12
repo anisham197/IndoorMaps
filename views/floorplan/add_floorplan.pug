@@ -16,13 +16,15 @@ block content
         button.accordion Step 2
         include upload_image
         button.accordion Step 3
-      div#map
+        include add_pois
+      div#map        
     div(style='clear:both')
 
 block script
     script(src='javascripts/floorplan_client.js')
     script(src='javascripts/step1_add_coordinates.js')
     script(src='javascripts/step2_upload_floorplan.js')
+    script(src='javascripts/step3_add_pois.js')
     script(src='javascripts/overlay.js')
     script(src='javascripts/fpoverlay.js')
     script(src='javascripts/latlng.js')

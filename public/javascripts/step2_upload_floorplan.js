@@ -69,4 +69,7 @@ function saveFloorplan() {
       alert("Error! Try again later.");
     }
   });
+
+  var acc = document.getElementsByClassName("accordion");
+  acc[2].disabled = false;
 }
