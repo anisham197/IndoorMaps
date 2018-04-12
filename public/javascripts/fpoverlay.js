@@ -63,7 +63,7 @@ FPOverlay.prototype.draw = function() {
 };
 
 FPOverlay.prototype.onRemove = function() {
-    console.log("onRemove called");
+  console.log("onRemove called");
   if(this.div){
     this.div.parentNode.removeChild(this.div);
     this.div = null;

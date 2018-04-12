@@ -1,32 +1,22 @@
 var selectedFile, floorNum ,imageFilepath;
 $("#image_file").change(overlayFloorplan);
-$("#select_floor").change(overlayFloorplan);
+$("#select_floor").change(onFloorSelected);
 $("#floorplan_save_button").click(saveFloorplan);
+
+function onFloorSelected() {
+  var selectFloor = document.getElementById('select_floor');
+  floorNum = selectFloor.options[selectFloor.selectedIndex].value;
+  document.getElementById('image_file').disabled = false;
+}
 
 function overlayFloorplan() {
 
-  if(checkFields()) {
-    console.log(selectedFile.name);
-    console.log(coordinates);
-    //save image to server
-    saveImage();
-    // code to display map
-  }
-  return;               
-}
-
-
-function checkFields() {
-  var floorSelect = document.getElementById('select_floor');
-  floorNum = floorSelect.options[floorSelect.selectedIndex].value;
-  selectedFile = document.getElementById('image_file').files[0];
-
-  if(floorNum == null || selectedFile == null){
-    document.getElementById('floorplan_save_button').disabled = true;
-    return false;
-  }
   document.getElementById('floorplan_save_button').disabled = false;
-  return true;    
+  selectedFile = document.getElementById('image_file').files[0];
+  //save image to server
+  saveImage();
+  // code to display map
+  return;               
 }
   
 function saveImage() {

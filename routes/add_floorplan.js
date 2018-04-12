@@ -29,6 +29,8 @@ router.get('/', function(req, res, next) {
     }).catch(function(error) {
       console.log("Error getting document:", error);
   });
+
+  
 });
 
 
@@ -74,7 +76,7 @@ router.post('/uploadimages', function(req, res, next) {
   var floorplanImage = req.files.floorplanImage;
   console.log(floorplanImage);
 
-  if(!floorplanImage){
+  if(!floorplanImage) {
     res.status(400).send("Bad request");
   }
 
@@ -82,22 +84,47 @@ router.post('/uploadimages', function(req, res, next) {
   if (!fs.existsSync(dir)){
     fs.mkdirSync(dir);
   }
+  var filename = buildingId + '_' + floorNum;
   var fileExt = floorplanImage.name.split('.').pop();
+  var filePath = dir + '/' + filename + '.' + fileExt;
 
-  var filename = buildingId + '_' + floorNum + '.' + fileExt;
-  var filePath = process.cwd() + '/floorplans/' + filename;
+  var file;
+  if(fs.existsSync(file = dir + '/' + filename + '.' + 'png')) {
+    console.log("png file exists");
+    fs.unlink(file, (err) => {
+      if (err) 
+        throw err;
+      console.log('file was deleted');
+    });
+  }
+  else if(fs.existsSync(file = dir + '/' + filename + '.' + 'jpg')) {
+    console.log("jpg file exists");
+    fs.unlink(file, (err) => {
+      if (err)
+        throw err;
+      console.log('file was deleted');
+    });
+  }
+  if(fs.existsSync(file = dir + '/' + filename + '.' + 'jpeg'))
+  {
+    console.log("jpeg file exists");
+    fs.unlink(file, (err) => {
+      if (err)
+        throw err;
+      console.log('file was deleted');
+    });
+  }
 
   console.log("\nfile path " + filePath);
   
   // Use the mv() method to place the file somewhere on your server
-  console.log(filename);
   fs.writeFile(filePath, floorplanImage.data, (err) => {
     if (err){
       console.log(err);
       return res.status(500).send("Internal Server Error");
     }
     console.log("File saved");
-    res.status(200).send( {msg: "Success", filepath: filename} );
+    res.status(200).send( {msg: "Success", filepath: filename + '.' + fileExt} );
   });
 
 });

@@ -1,4 +1,5 @@
 var polygon;
+var canvas;
 var isPolygonDragged = false;
 var finalCoordinates;
 
@@ -8,7 +9,7 @@ function displayFloorplan(imageFilepath, coordinates){
     console.log("filepath " + imageFilepath);
 
     var image = new Image();
-    var canvas;
+    // var canvas;
     image.src = imageFilepath;
     
     polygon =  new google.maps.Polygon({
