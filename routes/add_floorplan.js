@@ -36,17 +36,32 @@ router.post('/savecoordinates', function(req, res, next) {
 
   console.log(req.body);
   console.log("\nbuildingID " + buildingId);
-  var object = JSON.parse(req.body.coordinates);
-  db.collection("coordinates").doc(buildingId).set({
-    sw: object.sw,
-    nw: object.nw,
-    ne: object.ne
-  })
-  .then(function() {
-    return res.status(200).send("Document successfully written!");
-  })
-  .catch(function(error) {
-    return res.status(500).send("Error writing document: ", error);
+  var coordinates = JSON.parse(req.body.coordinates);
+
+  var docRef = db.collection('floorplans').doc(buildingId);
+
+  docRef.get()
+    .then((docSnapshot) => {
+      if (docSnapshot.exists) {
+        docRef.update({
+          initialCoordinates: coordinates
+        }).then(function() {
+            return res.status(200).send("Document successfully updated!");
+          }).catch(function(error) {
+          return res.status(500).send("Error updating document: ", error);
+        })
+      } else {
+        console.log("doc doesnt exist");
+        docRef.set({
+          initialCoordinates: coordinates
+        }).then(function() {
+            return res.status(200).send("Document successfully written!");
+          }).catch(function(error) {
+          return res.status(500).send("Error writing document: ", error);
+        }) 
+      }
+  }).catch(function(error) {
+    return res.status(500).send("Error getting document: ", error);
   });
 });
 
@@ -92,17 +107,17 @@ router.post('/savefloorplan', function(req, res,next) {
   console.log(req.body);
   var object = JSON.parse(req.body.data);
 
-  db.collection("floorplans").doc(buildingId).collection("floorNum").doc(object.floorNum).set({
-    imageFilepath: object.imageFilepath,
-    sw: object.coordinates.sw,
-    nw: object.coordinates.nw,
-    ne: object.coordinates.ne
-  })
-  .then(function() {
-    return res.status(200).send("Document successfully written!");
-  })
-  .catch(function(error) {
-    return res.status(500).send("Error writing document: ", error);
+  db.collection("floorplans").doc(buildingId).update({
+    [object.floorNum]: {
+      imageFilepath: object.imageFilepath,
+      sw: object.coordinates.sw,
+      nw: object.coordinates.nw,
+      ne: object.coordinates.ne
+    }
+  }).then(function() {
+    return res.status(200).send("Document successfully updated!");
+  }).catch(function(error) {
+    return res.status(500).send("Error updating document: ", error);
   });
 });
 
