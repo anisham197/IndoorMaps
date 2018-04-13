@@ -9,7 +9,6 @@ function displayFloorplan(imageFilepath, coordinates){
     console.log("filepath " + imageFilepath);
 
     var image = new Image();
-    // var canvas;
     image.src = imageFilepath;
     
     polygon =  new google.maps.Polygon({
@@ -30,15 +29,15 @@ function displayFloorplan(imageFilepath, coordinates){
     polygon.addListener('dragend', function(){
         // Polygon was dragged
         beingDragged = false;
-        //google.maps.event.trigger(poly.getPath(),'set_at');
+        google.maps.event.trigger(poly.getPath(),'set_at');
     });
 
     google.maps.event.addListener(polygon, 'click', function () {
-        polygon.setEditable(true);
+        // polygon.setEditable(true);
     });
   
     google.maps.event.addListener(map, 'click', function () {
-        polygon.setEditable(false);
+        // polygon.setEditable(false);
     });
 
     var bearingY = LatLon(coordinates.nw.lat, coordinates.nw.lng).bearingTo(LatLon(coordinates.sw.lat, coordinates.sw.lng));

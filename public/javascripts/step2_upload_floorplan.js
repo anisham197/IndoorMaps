@@ -23,7 +23,7 @@ function overlayFloorplan(event) {
 }
   
 function saveImage(callback) {
-
+  
   var data = new FormData();
   data.append('floorplanImage',selectedFile);
   data.append('floor', floorNum);
