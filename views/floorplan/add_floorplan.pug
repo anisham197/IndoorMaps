@@ -8,6 +8,9 @@ block head
     script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAEd76xkK9HeABLRAe_9mCmoNLs6jc9Zu8')
 
 block content
+    script.
+        var numFloors = !{JSON.stringify(building.numFloors)};
+        var buildingEncryptId = !{JSON.stringify(building.encryptId)};
     div#container
       div#floorplan-form
         p#building-name #{building.name}

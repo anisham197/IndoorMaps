@@ -57,7 +57,7 @@ function saveFloorplan() {
     'imageFilepath': imageFilepath,
     'floorNum': floorNum,
     'coordinates': finalCoordinates
-  }
+  };
 
   jQuery.ajax({
     url: '/addfloorplan/savefloorplan',

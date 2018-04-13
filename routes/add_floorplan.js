@@ -11,6 +11,7 @@ var helper = require('../helpers.js');
 
 var buildingId, numFloors;
 
+
 router.get('/', function(req, res, next) {
 
   // if(!helper.isAuthenticated(req, res)) {
@@ -35,8 +36,10 @@ router.get('/', function(req, res, next) {
   
 });
 
-router.get('/getBuildingInfo', function(req,res, next) {
-  var buildingId = req.query.id;
+
+router.get('/getBuildingInfo', function(req, res, next) {
+  var encryptBuildingId = req.query.id;
+  var buildingId = helper.decrypt(encryptBuildingId);
   var object = {};
   var floors = [];
   var floormap = new HashMap();
@@ -67,12 +70,32 @@ router.get('/getBuildingInfo', function(req,res, next) {
           'floors': floors
         };
       console.log(object);
-      // console.log(object.floors[1]);
+      return res.status(200).send( {msg: "Success", buildingInfo: object} );
     })
     .catch(err => {
         console.log('Error getting documents', err);
+        return res.status(500).send("Error getting document: ", error);
     });
-  return object;
+  //return object;
+});
+
+router.get('/getFloorplanInfo', function(req,res, next) {
+  var encryptBuildingId = req.query.id;
+  var buildingId = helper.decrypt(encryptBuildingId);
+
+  db.collection("floorplans").doc(buildingId).get()
+    .then(function(doc) {
+      if (doc.exists) {
+        return res.status(200).send( {msg: "Success", floorplans: doc.data()} );
+      } 
+      else {
+        console.log("No such document!");
+        return res.status(500).send("Error getting document: ", error);
+      }
+    }).catch(function(error) {
+      console.log("Error getting document:", error);
+      return res.status(500).send("Error getting document: ", error);
+    });
 });
 
 
@@ -212,7 +235,8 @@ router.post('/savefloorplan', function(req, res,next) {
       imageFilepath: object.imageFilepath,
       sw: object.coordinates.sw,
       nw: object.coordinates.nw,
-      ne: object.coordinates.ne
+      ne: object.coordinates.ne,
+      se: object.coordinates.se
     }
   }).then(function() {
     return res.status(200).send("Document successfully updated!");
