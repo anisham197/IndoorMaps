@@ -1,3 +1,5 @@
+var coordinates = {sw : null, nw : null, ne : null};
+
 var selectedFile, floorNum ,imageFilepath;
 $("#image_file").change(overlayFloorplan);
 $("#select_floor").change(onFloorSelected);
@@ -7,6 +9,9 @@ function onFloorSelected() {
   clearFloorPlan();
   var selectFloor = document.getElementById('select_floor');
   floorNum = selectFloor.options[selectFloor.selectedIndex].value;
+  if (floorplanInfo != null){
+    // show non editable overlay with markers using saved coordinates
+  }
   document.getElementById('image_file').disabled = false;
 }
 
@@ -75,7 +80,5 @@ function saveFloorplan() {
       alert("Error! Try again later.");
     }
   });
-
-  var acc = document.getElementsByClassName("accordion");
-  acc[2].disabled = false;
+  accordion[1].disabled = false;
 }

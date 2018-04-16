@@ -1,5 +1,5 @@
 $('#btn_picker').click(function() { addPois(); });
-var floorplanInfo = null;
+// var floorplanInfo = null;
 var buildingInfo = null;
 var buttons = [];
 
@@ -14,23 +14,23 @@ function addPois() {
 }
 
 
-function getFloorplanInfo() {
-    jQuery.ajax({
-        url: '/addfloorplan/getFloorplanInfo?id=' + buildingEncryptId,
-        cache: false,
-        method: 'GET',
-        type: 'GET', // For jQuery < 1.9
-        success: function(data){
-          floorplanInfo = data.floorplans;
-          console.log(floorplanInfo);
-          level = 1;
-          displayLevel(level);
-        },
-        error : function(error) {
-          console.log(error);
-        }
-    });
-}
+// function getFloorplanInfo() {
+//     jQuery.ajax({
+//         url: '/addfloorplan/getFloorplanInfo?id=' + buildingEncryptId,
+//         cache: false,
+//         method: 'GET',
+//         type: 'GET', // For jQuery < 1.9
+//         success: function(data){
+//           floorplanInfo = data.floorplans;
+//           console.log(floorplanInfo);
+//           level = 1;
+//           displayLevel(level);
+//         },
+//         error : function(error) {
+//           console.log(error);
+//         }
+//     });
+// }
 
 
 function getBuildingInfo() {

@@ -89,8 +89,7 @@ router.get('/getFloorplanInfo', function(req,res, next) {
         return res.status(200).send( {msg: "Success", floorplans: doc.data()} );
       } 
       else {
-        console.log("No such document!");
-        return res.status(500).send("Error getting document: ", error);
+        return res.status(200).send( {msg: "No Such Document", floorplans: null} );
       }
     }).catch(function(error) {
       console.log("Error getting document:", error);

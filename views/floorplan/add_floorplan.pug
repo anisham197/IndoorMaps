@@ -9,23 +9,24 @@ block head
 
 block content
     script.
+        var buildingCoordinates = !{JSON.stringify(building.buildingCoordinates)};
         var numFloors = !{JSON.stringify(building.numFloors)};
         var buildingEncryptId = !{JSON.stringify(building.encryptId)};
     div#container
       div#floorplan-form
         p#building-name #{building.name}
-        button.accordion Step 1
-        include add_coordinates
-        button.accordion Step 2
+        //- button.accordion Step 1
+        //- include add_coordinates
+        button.accordion Upload Floorplan
         include upload_image
-        button.accordion Step 3
+        button.accordion Add Points of Interest
         include add_pois
       div#map        
     div(style='clear:both')
 
 block script
     script(src='javascripts/floorplan_client.js')
-    script(src='javascripts/step1_add_coordinates.js')
+    //- script(src='javascripts/step1_add_coordinates.js')
     script(src='javascripts/step2_upload_floorplan.js')
     script(src='javascripts/step3_add_pois.js')
     script(src='javascripts/overlay.js')
