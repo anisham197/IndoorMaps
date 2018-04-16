@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
     .then(function(doc) {
       if (doc.exists) {
         numFloors = doc.data().metadata.numFloors;
-        var building = new Building(doc.id, encryptBuildingId, doc.data().locationId, doc.data().name, numFloors, doc.data().metadata.numRooms);
+        var building = new Building(doc.id, encryptBuildingId, doc.data().locationId, doc.data().name, numFloors, doc.data().metadata.numRooms, doc.data().buildingCoordinates);
         return res.render('floorplan/add_floorplan', { title: 'Add floorplan', building: building });
       } else {
           console.log("No such document!");
@@ -34,6 +34,12 @@ router.get('/', function(req, res, next) {
 
   
 });
+
+
+router.get('/getBuildig', function(req, res, next) {
+
+});
+
 
 router.get('/getBuildingInfo', function(req,res, next) {
   var buildingId = req.query.id;

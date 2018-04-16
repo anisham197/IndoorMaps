@@ -23,7 +23,7 @@ router.post('/', function(req, res, next) {
       numFloors: req.body.num_floors,
       numRooms: req.body.num_rooms,
     },
-    initialCoordinates: JSON.parse(req.body.coordinates)
+    buildingCoordinates: JSON.parse(req.body.coordinates)
   };
   db.collection('buildings').doc().set(data).catch(function(error) {
     return res.status(500).send("Error writing document ", error);
