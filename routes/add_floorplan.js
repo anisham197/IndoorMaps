@@ -36,11 +36,6 @@ router.get('/', function(req, res, next) {
 });
 
 
-router.get('/getBuildig', function(req, res, next) {
-
-});
-
-
 router.get('/getBuildingInfo', function(req,res, next) {
   var buildingId = req.query.id;
   var object = {};
