@@ -1,6 +1,6 @@
 #panel
   form(action="")
-    select#select_floor(name="floor" required)
+    select#select_floor_image(name="floor" required)
       option(value="" disabled selected hidden) Select Floor
       - for(var i = 1; i <= building.numFloors; i++) {
           option(value=i) #{i}

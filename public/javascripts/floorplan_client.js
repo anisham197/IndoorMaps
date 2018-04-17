@@ -28,6 +28,7 @@ $(document).ready(function(){
     }
   });
 
+  //Get details of all rooms
   getBuildingInfo();
   
 });
@@ -36,7 +37,7 @@ $(document).ready(function(){
 function initMap() {
   var location = {lat: coordinates.nw.lat, lng: coordinates.nw.lng};
   map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 18,
+    zoom: 19,
     center: location,
     clickableIcons: false,
     zoomControl: true,

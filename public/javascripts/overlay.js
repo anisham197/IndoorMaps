@@ -7,13 +7,125 @@ function getFinalCoordinates(){
     return finalCoordinates;
 }
 
-function displayFloorplan(imageFilepath, coordinates){
+function showFloorplanWithMarkersForLevel(level, markerDraggable){
+    // markerDraggable is boolean variable to distinguish between step 1 and 2 
+    var image = new Image();
+    image.src = floorplanInfo[level].imageFilepath;
+    var coordinates = {
+        sw: floorplanInfo[level].sw ,
+        se: floorplanInfo[level].se ,
+        nw: floorplanInfo[level].nw ,
+        ne: floorplanInfo[level].ne
+    };
+    var bearingY = LatLon(coordinates.nw.lat, coordinates.nw.lng).bearingTo(LatLon(coordinates.sw.lat, coordinates.sw.lng));
+    var bearingX = LatLon(coordinates.nw.lat, coordinates.nw.lng).bearingTo(LatLon(coordinates.ne.lat, coordinates.ne.lng));
 
-    console.log("displayFloorplan() function called");
+    google.maps.event.addDomListener(image,'load',function(){
+        console.log("Image load listener called");
+        canvas = new FPOverlay( 
+            image, 
+            map,
+            {x: bearingX, y: bearingY},
+            {sw: coordinates.sw, nw: coordinates.nw, ne: coordinates.ne, se: coordinates.se}
+        );
+    });
+
+    if(!buildingInfo.floors[floorNum-1].rooms) {
+        console.log("no rooms added");
+        return;
+    }
+    buildingInfo.floors[floorNum-1].rooms.forEach( function (room) {
+        var roomId = room.roomId;
+        //Add room name only if marker hasn't been added for that room
+        if(room.roomLocation ) {
+            // For draggable markers
+            if(markerDraggable) {
+                // If marker already created, show it on map
+                if(markers[roomId]){
+                    markers[roomId].setMap(map);
+                }
+                // Create marker and attach listener
+                else {
+                    markers[roomId] = new google.maps.Marker({
+                        position: {lat: room.roomLocation.lat, lng: room.roomLocation.lng},
+                        draggable: markerDraggable,
+                        map: map,
+                        title: room.roomName
+                    });
+                    google.maps.event.addListener(markers[roomId], 'dragend', function(evt){
+                        var lat = evt.latLng.lat();
+                        var lng = evt.latLng.lng() ;
+                        console.log("marker dropped: Current Lat: ' " + lat + " ' Current Lng: ' " + lng);
+                        roomMap[roomId] = { lat: lat, lng: lng };
+                        // console.log(markers[roomId].getPosition().lat());
+                    });
+                }
+            }
+            // For static markers
+            else {
+                // If marker already created, show it on map
+                if(staticMarkers[roomId]){
+                    staticMarkers[roomId].setMap(map);
+                }
+                // Create marker
+                else {
+                    staticMarkers[roomId] = new google.maps.Marker({
+                        position: {lat: room.roomLocation.lat, lng: room.roomLocation.lng},
+                        draggable: markerDraggable,
+                        map: map,
+                        icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                        title: room.roomName
+                    });
+                }
+            }
+
+            // if((!markerDraggable && !staticMarkers[roomId]) || (markerDraggable && !markers[roomId])) {
+            //     var marker = new google.maps.Marker({
+            //         position: {lat: room.roomLocation.lat, lng: room.roomLocation.lng},
+            //         draggable: markerDraggable,
+            //         map: map,
+            //         title: room.roomName
+            //     });
+    
+            //     if(markerDraggable) {
+            //         markers[roomId] = marker;
+            //         google.maps.event.addListener(markers[roomId], 'dragend', function(evt){
+            //             var lat = evt.latLng.lat();
+            //             var lng = evt.latLng.lng() ;
+            //             console.log("marker dropped: Current Lat: ' " + lat + " ' Current Lng: ' " + lng);
+            //             roomMap[roomId] = { lat: lat, lng: lng };
+            //             // console.log(markers[roomId].getPosition().lat());
+            //         });
+            //     }
+            //     else {
+            //         staticMarkers[roomId] = marker;
+            //     }
+            // }
+            // else {
+            //     console.log("marker already present in object");
+            //     if(!markerDraggable) {
+            //         staticMarkers[roomId].setMap(map);
+            //     }
+            // }
+        }
+    });
+}
+
+function editFloorplan(imageFilepath, coordinates){
+
+    if(canvas){
+        console.log("before clear canvas not null");
+    }
+    // clearFloorPlan();
+    if(canvas){
+        console.log("canvas not null");
+    }
+    console.log("editFloorplan() function called");
     console.log("filepath " + imageFilepath);
 
     var image = new Image();
     image.src = imageFilepath;
+
     
     polygon =  new google.maps.Polygon({
         fillColor: 'white',
@@ -21,7 +133,7 @@ function displayFloorplan(imageFilepath, coordinates){
         strokeColor: "#BC1D0F",
         map: null,
         path: [],
-        draggable: true,
+        draggable: false,
         editable: true
     });
   
@@ -33,7 +145,7 @@ function displayFloorplan(imageFilepath, coordinates){
     polygon.addListener('dragend', function(){
         // Polygon was dragged
         beingDragged = false;
-        google.maps.event.trigger(poly.getPath(),'set_at');
+        // google.maps.event.trigger(poly.getPath(),'set_at');
     });
 
     google.maps.event.addListener(polygon, 'click', function () {
@@ -112,7 +224,7 @@ function displayFloorplan(imageFilepath, coordinates){
 
                 canvas.setMap(null);
 
-                canvas = new FPOverlay( 
+                canvas = new FPOverlay(
                     image, 
                     map,
                     {x: iBearingX, y: iBearingY},
@@ -122,12 +234,15 @@ function displayFloorplan(imageFilepath, coordinates){
         });
     });
 
-    canvas = new FPOverlay( 
-        image, 
-        map,
-        {x: bearingX, y: bearingY},
-        {sw: path[0], nw: path[1], ne: path[2], se: path[3]}
-    );
+    google.maps.event.addDomListener(image,'load',function(){
+        console.log("Image load listener called");
+        canvas = new FPOverlay( 
+            image, 
+            map,
+            {x: bearingX, y: bearingY},
+            {sw: path[0], nw: path[1], ne: path[2], se: path[3]}
+        );
+    });
 }
 
 function clearFloorPlan(){
