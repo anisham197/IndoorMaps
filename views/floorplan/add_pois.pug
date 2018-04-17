@@ -5,8 +5,5 @@
 			option(value=i) #{i}
 		- }
 	br
-	select#select_room_pois(name="floor")
+	select#select_room(name="room" disabled)
 		option(value="" disabled selected hidden) Select Room
-		- for(var i = 1; i <= building.numFloors; i++) {
-			option(value=i) #{i}
-		- }

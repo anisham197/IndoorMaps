@@ -58,12 +58,22 @@ router.get('/getBuildingInfo', function(req,res, next) {
           rooms.push(room);
           floormap.set(floorNum, rooms);
         });
-        floormap.forEach(function(value, key) {
+
+        for(var i = 1; i <= numFloors; i++) {
+          var value = floormap.get(i.toString());
+          console.log(i);
+          console.log(value);
           floors.push({
-            'floorNum': key,
+            'floorNum': i,
             'rooms': value
           })
-        });
+        }
+        // floormap.forEach(function(value, key) {
+        //   floors.push({
+        //     'floorNum': key,
+        //     'rooms': value
+        //   })
+        // });
         object = {
           'numFloors': numFloors,
           'floors': floors

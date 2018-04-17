@@ -2,6 +2,7 @@ var map;
 var accordion;
 var coordinates = buildingCoordinates;
 var floorplanInfo = null;
+var buildingInfo = null;
 
 $(document).ready(function(){
   accordion = document.getElementsByClassName("accordion");
@@ -26,6 +27,9 @@ $(document).ready(function(){
       accordion[1].disabled = true;
     }
   });
+
+  getBuildingInfo();
+  
 });
 
 
@@ -52,6 +56,23 @@ function getFloorplanInfo(callback) {
       type: 'GET', // For jQuery < 1.9
       success: function(data){
         callback(data);
+      },
+      error : function(error) {
+        console.log(error);
+      }
+  });
+}
+
+
+function getBuildingInfo() {
+  jQuery.ajax({
+      url: '/addfloorplan/getBuildingInfo?id=' + buildingEncryptId,
+      cache: false,
+      method: 'GET',
+      type: 'GET', // For jQuery < 1.9
+      success: function(data){
+        buildingInfo = data.buildingInfo;
+        console.log(buildingInfo);
       },
       error : function(error) {
         console.log(error);
