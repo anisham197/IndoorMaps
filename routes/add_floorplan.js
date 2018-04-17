@@ -82,6 +82,21 @@ router.get('/getFloorplanInfo', function(req,res, next) {
   var encryptBuildingId = req.query.id;
   var buildingId = helper.decrypt(encryptBuildingId);
 
+  // db.collection("floorplans").doc(buildingId).onSnapshot(function(docSnapshot) {
+  //     if (docSnapshot.exists) {
+  //       console.log(docSnapshot.data());
+  //       console.log("Anisha");
+  //       return res.status(200).send( {msg: "Success", floorplans: docSnapshot.data()} );
+  //     } 
+  //     else {
+  //       console.log(docSnapshot);
+  //       return res.status(200).send( {msg: "No Such Document", floorplans: null} );
+  //     }
+  // }, function(err) {
+  //   console.log("Encountered error");
+  //   //return res.status(500).send("Error getting document: ", error);
+  // });
+
   db.collection("floorplans").doc(buildingId).get()
     .then(function(doc) {
       if (doc.exists) {
@@ -181,7 +196,7 @@ router.post('/uploadimages', function(req, res, next) {
     fs.mkdirSync(dir);
   }
   var filename = buildingId + '_' + floorNum;
-  var fileExt = floorplanImage.name.split('.').pop();
+  var fileExt = floorplanImage.name.split('.').pop().toLowerCase();
   var filePath = dir + '/' + filename + '.' + fileExt;
 
   var file;

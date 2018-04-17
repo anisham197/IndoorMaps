@@ -7,13 +7,45 @@ function getFinalCoordinates(){
     return finalCoordinates;
 }
 
-function displayFloorplan(imageFilepath, coordinates){
+function showFloorplanWithMarkersForLevel(level){
+    //TODO: add part to display POIs
+    var image = new Image();
+    image.src = floorplanInfo[level].imageFilepath;
+    var coordinates = {
+        sw: floorplanInfo[level].sw ,
+        se: floorplanInfo[level].se ,
+        nw: floorplanInfo[level].nw ,
+        ne: floorplanInfo[level].ne
+    };
+    var bearingY = LatLon(coordinates.nw.lat, coordinates.nw.lng).bearingTo(LatLon(coordinates.sw.lat, coordinates.sw.lng));
+    var bearingX = LatLon(coordinates.nw.lat, coordinates.nw.lng).bearingTo(LatLon(coordinates.ne.lat, coordinates.ne.lng));
 
-    console.log("displayFloorplan() function called");
+    google.maps.event.addDomListener(image,'load',function(){
+        console.log("Image load listener called");
+        canvas = new FPOverlay( 
+            image, 
+            map,
+            {x: bearingX, y: bearingY},
+            {sw: coordinates.sw, nw: coordinates.nw, ne: coordinates.ne, se: coordinates.se}
+        );
+    });    
+}
+
+function editFloorplan(imageFilepath, coordinates){
+
+    if(canvas){
+        console.log("before clear canvas not null");
+    }
+    // clearFloorPlan();
+    if(canvas){
+        console.log("canvas not null");
+    }
+    console.log("editFloorplan() function called");
     console.log("filepath " + imageFilepath);
 
     var image = new Image();
     image.src = imageFilepath;
+
     
     polygon =  new google.maps.Polygon({
         fillColor: 'white',
@@ -21,7 +53,7 @@ function displayFloorplan(imageFilepath, coordinates){
         strokeColor: "#BC1D0F",
         map: null,
         path: [],
-        draggable: true,
+        draggable: false,
         editable: true
     });
   
@@ -33,7 +65,7 @@ function displayFloorplan(imageFilepath, coordinates){
     polygon.addListener('dragend', function(){
         // Polygon was dragged
         beingDragged = false;
-        google.maps.event.trigger(poly.getPath(),'set_at');
+        // google.maps.event.trigger(poly.getPath(),'set_at');
     });
 
     google.maps.event.addListener(polygon, 'click', function () {
@@ -112,7 +144,7 @@ function displayFloorplan(imageFilepath, coordinates){
 
                 canvas.setMap(null);
 
-                canvas = new FPOverlay( 
+                canvas = new FPOverlay(
                     image, 
                     map,
                     {x: iBearingX, y: iBearingY},
@@ -122,12 +154,15 @@ function displayFloorplan(imageFilepath, coordinates){
         });
     });
 
-    canvas = new FPOverlay( 
-        image, 
-        map,
-        {x: bearingX, y: bearingY},
-        {sw: path[0], nw: path[1], ne: path[2], se: path[3]}
-    );
+    google.maps.event.addDomListener(image,'load',function(){
+        console.log("Image load listener called");
+        canvas = new FPOverlay( 
+            image, 
+            map,
+            {x: bearingX, y: bearingY},
+            {sw: path[0], nw: path[1], ne: path[2], se: path[3]}
+        );
+    });
 }
 
 function clearFloorPlan(){
