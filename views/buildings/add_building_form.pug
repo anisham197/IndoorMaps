@@ -1,31 +1,48 @@
 extends ../layout
 
 block title
-  title Building Form
+  title #{title}
 
 block head
-    link(rel='stylesheet', href='/stylesheets/form.css')
+  link(rel='stylesheet', href='/stylesheets/buildingform.css')
+  meta(name='viewport', content='initial-scale=1.0, user-scalable=no')
+  meta(charset='utf-8')
 
 block content
-    include ../nav_drawer.pug
-    
-    main#form_main.web-main.mdl-layout__content
-      br
-      br
-      br
-      .mdl-grid.portfolio-max-width
-        .mdl-cell.mdl-cell--5-col.mdl-cell--hide-tablet.mdl-cell--hide-phone
-        .mdl-cell.mdl-cell--5-col.mdl-card.mdl-shadow--4dp
-          #form_create_class
-            h3 Add a Building
-            form(method="POST" action="/addbuilding")
-              .mdl-textfield.mdl-js-textfield
-                input.mdl-textfield__input(type="text" name="building_name" placeholder="Name of the Building" required="")
-              .mdl-textfield.mdl-js-textfield
-                input.mdl-textfield__input(type="text" name="num_floors" placeholder="No. of floors" required="")
-              .mdl-textfield.mdl-js-textfield
-                input.mdl-textfield__input(type="text" name="num_rooms" placeholder="No. of rooms" required="")
-              br
-              input.rc-button.rc-button-submit(type="submit" value="Submit")
-            br
+  #container
+    #building-form 
+      h4 Add a Building
+        form(method="POST" action="/addbuilding" autocomplete="off")
+          .mdl-textfield.mdl-js-textfield
+            input.mdl-textfield__input(type="text" name="building_name" placeholder="Name of the Building" required="")
+          .mdl-textfield.mdl-js-textfield
+            input.mdl-textfield__input(type="number" name="num_floors" placeholder="No. of floors" required="" min="1")
+          .mdl-textfield.mdl-js-textfield
+            input.mdl-textfield__input(type="number" name="num_rooms" placeholder="No. of rooms" required="" min="1")
+          .mdl-textfield.mdl-js-textfield
+            input#sw.mdl-textfield__input(type="text" placeholder="Southwest Coordinate" required="" disabled)
+          .mdl-textfield.mdl-js-textfield
+            input#nw.mdl-textfield__input(type="text" placeholder="Northwest Coordinate" required="" disabled)
+          .mdl-textfield.mdl-js-textfield
+            input#ne.mdl-textfield__input(type="text" placeholder="Northeast Coordinate" required="" disabled)
+          input#coordinates(type="hidden" name="coordinates")
+          br
+          input.rc-button.rc-button-submit(type="submit" value="Submit")
+        br
+
+    #map-container
+      #pac-card.pac-card
+        #pac-container
+          input#pac-input(type='text', placeholder='Enter a location')
+      #map
+      #infowindow-content
+        span#place-name.title
+        br
+        span#place-address
+  div(style='clear:both')
+
+block script
+  script(src='javascripts/add_building_form.js')
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCa4IHhuU65nfYlTQZc1Nn-N6noecEa-T4&libraries=places&callback=initMap' async='')
+  
 

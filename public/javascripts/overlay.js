@@ -3,13 +3,16 @@ var canvas;
 var beingDragged = false;
 var finalCoordinates;
 
+function getFinalCoordinates(){
+    return finalCoordinates;
+}
+
 function displayFloorplan(imageFilepath, coordinates){
 
     console.log("displayFloorplan() function called");
     console.log("filepath " + imageFilepath);
 
     var image = new Image();
-    // var canvas;
     image.src = imageFilepath;
     
     polygon =  new google.maps.Polygon({
@@ -30,15 +33,15 @@ function displayFloorplan(imageFilepath, coordinates){
     polygon.addListener('dragend', function(){
         // Polygon was dragged
         beingDragged = false;
-        //google.maps.event.trigger(poly.getPath(),'set_at');
+        google.maps.event.trigger(poly.getPath(),'set_at');
     });
 
     google.maps.event.addListener(polygon, 'click', function () {
-        polygon.setEditable(true);
+        // polygon.setEditable(true);
     });
   
     google.maps.event.addListener(map, 'click', function () {
-        polygon.setEditable(false);
+        // polygon.setEditable(false);
     });
 
     var bearingY = LatLon(coordinates.nw.lat, coordinates.nw.lng).bearingTo(LatLon(coordinates.sw.lat, coordinates.sw.lng));
@@ -88,10 +91,6 @@ function displayFloorplan(imageFilepath, coordinates){
                 nwLatLon = LatLon(this.getAt(1).lat(), this.getAt(1).lng());
                 neLatLon = LatLon(this.getAt(2).lat(), this.getAt(2).lng());
 
-                document.getElementById("sw_input" ).value= swLatLon.lat.toFixed(6) + " , " + swLatLon.lon.toFixed(6);
-                document.getElementById("nw_input" ).value= nwLatLon.lat.toFixed(6) + " , " + nwLatLon.lon.toFixed(6);
-                document.getElementById("ne_input" ).value= neLatLon.lat.toFixed(6) + " , " + neLatLon.lon.toFixed(6);
-
                 var iBearingY = nwLatLon.bearingTo(swLatLon);
                 var iBearingX = nwLatLon.bearingTo(neLatLon);
                 var iDistanceY = nwLatLon.distanceTo(swLatLon);
@@ -129,8 +128,6 @@ function displayFloorplan(imageFilepath, coordinates){
         {x: bearingX, y: bearingY},
         {sw: path[0], nw: path[1], ne: path[2], se: path[3]}
     );
-
-    clearMarkers();
 }
 
 function clearFloorPlan(){

@@ -1,5 +1,6 @@
 var map; 
 var accordion;
+var coordinates = buildingCoordinates;
 var floorplanInfo = null;
 
 $(document).ready(function(){
@@ -17,10 +18,10 @@ $(document).ready(function(){
     });
   }
   // ajax call
-  getFloorplanInfo(function(output){
-    floorplanInfo = data.floorplans;
+  getFloorplanInfo(function(result){
+    floorplanInfo = result.floorplans;
     console.log(floorplanInfo);
-    console.log(data.msg);
+    console.log(result.msg);
     if (floorplanInfo == null){
       accordion[1].disabled = true;
     }
@@ -29,7 +30,7 @@ $(document).ready(function(){
 
 
 function initMap() {
-  var location = {lat: buildingCoordinates.nw.lat, lng:  buildingCoordinates.nw.lng};
+  var location = {lat: coordinates.nw.lat, lng: coordinates.nw.lng};
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: 18,
     center: location,

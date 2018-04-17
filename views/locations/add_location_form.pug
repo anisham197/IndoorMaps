@@ -1,7 +1,7 @@
 extends ../layout
 
 block title
-  title Location Form
+  title #{title}
 
 block head
     link(rel='stylesheet', href='/stylesheets/form.css')
@@ -14,8 +14,8 @@ block content
       br
       br
       .mdl-grid.portfolio-max-width
-        .mdl-cell.mdl-cell--6-col.mdl-cell--hide-tablet.mdl-cell--hide-phone
-        .mdl-cell.mdl-cell--6-col.mdl-card.mdl-shadow--4dp
+        .mdl-cell.mdl-cell--5-col.mdl-cell--hide-tablet.mdl-cell--hide-phone
+        .mdl-cell.mdl-cell--5-col.mdl-card.mdl-shadow--4dp
           #form_create_class
             h3 Add a Location
             form(method="POST" action="/addlocation")
@@ -28,4 +28,3 @@ block content
               br
               input.rc-button.rc-button-submit(type="submit" value="Submit")
             br
-

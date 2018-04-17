@@ -1,6 +1,5 @@
-var coordinates = {sw : null, nw : null, ne : null};
+var selectedFile, floorNum, imageFilepath;
 
-var selectedFile, floorNum ,imageFilepath;
 $("#image_file").change(overlayFloorplan);
 $("#select_floor").change(onFloorSelected);
 $("#floorplan_save_button").click(saveFloorplan);
@@ -15,20 +14,25 @@ function onFloorSelected() {
   document.getElementById('image_file').disabled = false;
 }
 
-function overlayFloorplan(event) {
+function overlayFloorplan(imageFileEvent) {
   clearFloorPlan();
   document.getElementById('floorplan_save_button').disabled = false;
   selectedFile = document.getElementById('image_file').files[0];
   //save image to server
-  saveImage(function(){
-    event.target.value = '';
+  saveImage(function(result){
+    console.log("image saved");
+    console.log(result);
+    imageFilepath = result.filepath;   
+    // code to display map
+    displayFloorplan(imageFilepath, coordinates);
+    imageFileEvent.target.value = '';
   });
-  // code to display map
+
   return;               
 }
   
 function saveImage(callback) {
-
+  
   var data = new FormData();
   data.append('floorplanImage',selectedFile);
   data.append('floor', floorNum);
@@ -42,12 +46,7 @@ function saveImage(callback) {
     method: 'POST',
     type: 'POST', // For jQuery < 1.9
     success: function(data){
-      console.log("image saved");
-      console.log(data);
-      // code to display map
-      imageFilepath = data.filepath;
-      displayFloorplan(imageFilepath, coordinates);
-      callback();
+      callback(data);
     },
     error : function(error) {
       console.log(error);
@@ -57,11 +56,11 @@ function saveImage(callback) {
 }
   
 function saveFloorplan() {
-
+  console.log("Save Floorplan called");
   var data = {
     'imageFilepath': imageFilepath,
     'floorNum': floorNum,
-    'coordinates': finalCoordinates
+    'coordinates': getFinalCoordinates()
   };
 
   jQuery.ajax({

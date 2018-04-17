@@ -23,9 +23,9 @@ router.get('/', function(req, res, next) {
   db.collection("buildings").doc(buildingId).get()
     .then(function(doc) {
       if (doc.exists) {
-        var numFloors = doc.data().metadata.numFloors;
-          var building = new Building(doc.id, encryptBuildingId, doc.data().locationId, doc.data().name, doc.data().metadata.numFloors, doc.data().metadata.numRooms);
-          return res.render('floorplan/add_floorplan', { title: 'Add floorplan', building: building });
+        numFloors = doc.data().metadata.numFloors;
+        var building = new Building(doc.id, encryptBuildingId, doc.data().locationId, doc.data().name, numFloors, doc.data().metadata.numRooms, doc.data().buildingCoordinates);
+        return res.render('floorplan/add_floorplan', { title: 'Add floorplan', building: building });
       } else {
           console.log("No such document!");
       }
@@ -37,7 +37,7 @@ router.get('/', function(req, res, next) {
 });
 
 
-router.get('/getBuildingInfo', function(req, res, next) {
+router.get('/getBuildingInfo', function(req,res, next) {
   var encryptBuildingId = req.query.id;
   var buildingId = helper.decrypt(encryptBuildingId);
   var object = {};
@@ -64,7 +64,6 @@ router.get('/getBuildingInfo', function(req, res, next) {
             'rooms': value
           })
         });
-        // console.log(floors);
         object = {
           'numFloors': numFloors,
           'floors': floors
@@ -114,18 +113,20 @@ router.post('/saveRoomLoc', function(req, res, next) {
     .then((docSnapshot) => {
       if (docSnapshot.exists) {
         docRef.update({
-          location: location
+          'location': location
         }).then(function() {
             return res.status(200).send("Document successfully updated!");
           }).catch(function(error) {
-          return res.status(500).send("Error updating document: ", error);
+          return res.status(500).send("Error updating document ", error);
         })
       } else {
         console.log("doc doesnt exist");
+        return res.status(500).send("Document doesn't exist ", error);
       }
   }).catch(function(error) {
-    return res.status(500).send("Error getting document: ", error);
+    return res.status(500).send("Error getting document ", error);
   });
+  return res.status(500).send("Error occured while saving room locations", error);
 });
 
 
@@ -229,7 +230,7 @@ router.post('/savefloorplan', function(req, res,next) {
   console.log(req.body);
   var object = JSON.parse(req.body.data);
 
-  db.collection("floorplans").doc(buildingId).update({
+  db.collection("floorplans").doc(buildingId).set({
     [object.floorNum]: {
       imageFilepath: object.imageFilepath,
       sw: object.coordinates.sw,
@@ -237,7 +238,8 @@ router.post('/savefloorplan', function(req, res,next) {
       ne: object.coordinates.ne,
       se: object.coordinates.se
     }
-  }).then(function() {
+  }, {merge: true})
+  .then(function() {
     return res.status(200).send("Document successfully updated!");
   }).catch(function(error) {
     return res.status(500).send("Error updating document: ", error);
