@@ -8,23 +8,24 @@ block head
     script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAEd76xkK9HeABLRAe_9mCmoNLs6jc9Zu8')
 
 block content
+    script.
+        var buildingCoordinates = !{JSON.stringify(building.buildingCoordinates)};
+        var numFloors = !{JSON.stringify(building.numFloors)};
+        var buildingEncryptId = !{JSON.stringify(building.encryptId)};
     div#container
       div#floorplan-form
         p#building-name #{building.name}
-        button.accordion Step 1
-        include add_coordinates
-        button.accordion Step 2
+        .loader(id="loader")
+        button.accordion Upload Floorplan
         include upload_image
-        button.accordion Step 3
+        button.accordion Add Points of Interest
         include add_pois
       div#map        
     div(style='clear:both')
 
 block script
     script(src='javascripts/floorplan_client.js')
-    script(src='javascripts/step1_add_coordinates.js')
-    script(src='javascripts/step2_upload_floorplan.js')
-    script(src='javascripts/step3_add_pois.js')
+    script(src='javascripts/step_upload_floorplan.js')
     script(src='javascripts/overlay.js')
     script(src='javascripts/fpoverlay.js')
     script(src='javascripts/latlng.js')

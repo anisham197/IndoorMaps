@@ -3,21 +3,69 @@ var canvas;
 var beingDragged = false;
 var finalCoordinates;
 
-function displayFloorplan(imageFilepath, coordinates){
+function getFinalCoordinates(){
+    return finalCoordinates;
+}
 
-    console.log("displayFloorplan() function called");
-    console.log("filepath " + imageFilepath);
+function showFloorplanWithMarkersForLevel(level){
+    //TODO: add part to display POIs
+    var image = new Image();
+    // nocache path param to prevent loading cached image
+    getFloorplanInfo(function(result){
+        floorplanInfo = result.floorplans;        
+        image.src = floorplanInfo[level].imageFilepath+'?nocache='+(new Date().getTime());
+        document.getElementById('loader').style.display = "block";
+        var coordinates = {
+            sw: floorplanInfo[level].sw,
+            se: floorplanInfo[level].se,
+            nw: floorplanInfo[level].nw,
+            ne: floorplanInfo[level].ne
+        };
+        var bearingY = LatLon(coordinates.nw.lat, coordinates.nw.lng).bearingTo(LatLon(coordinates.sw.lat, coordinates.sw.lng));
+        var bearingX = LatLon(coordinates.nw.lat, coordinates.nw.lng).bearingTo(LatLon(coordinates.ne.lat, coordinates.ne.lng));
+        google.maps.event.clearListeners(image, 'load');
+        google.maps.event.addDomListener(image,'load',function(){
+            console.log("Image load listener called");
+            document.getElementById('loader').style.display = "none";
+            canvas = new FPOverlay( 
+                image, 
+                map,
+                {x: bearingX, y: bearingY},
+                {sw: coordinates.sw, nw: coordinates.nw, ne: coordinates.ne, se: coordinates.se}
+            );
+        });
+    });
+        
+}
+
+function editFloorplan(imageFile, coordinates){
+
+    if(canvas){
+        console.log("before clear canvas not null");
+    }
+    // clearFloorPlan();
+    if(canvas){
+        console.log("canvas not null");
+    }
+    console.log("editFloorplan() function called");
+    //console.log("filepath " + imageFilepath);
 
     var image = new Image();
-    image.src = imageFilepath;
-    
+    //image.src = imageFilepath;
+
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        image.src = e.target.result;
+    };
+    reader.readAsDataURL(imageFile);
+
     polygon =  new google.maps.Polygon({
         fillColor: 'white',
         strokeWeight: 1,
         strokeColor: "#BC1D0F",
         map: null,
         path: [],
-        draggable: true,
+        draggable: false,
         editable: true
     });
   
@@ -29,7 +77,7 @@ function displayFloorplan(imageFilepath, coordinates){
     polygon.addListener('dragend', function(){
         // Polygon was dragged
         beingDragged = false;
-        google.maps.event.trigger(poly.getPath(),'set_at');
+        // google.maps.event.trigger(poly.getPath(),'set_at');
     });
 
     google.maps.event.addListener(polygon, 'click', function () {
@@ -87,10 +135,6 @@ function displayFloorplan(imageFilepath, coordinates){
                 nwLatLon = LatLon(this.getAt(1).lat(), this.getAt(1).lng());
                 neLatLon = LatLon(this.getAt(2).lat(), this.getAt(2).lng());
 
-                document.getElementById("sw_input" ).value= swLatLon.lat.toFixed(6) + " , " + swLatLon.lon.toFixed(6);
-                document.getElementById("nw_input" ).value= nwLatLon.lat.toFixed(6) + " , " + nwLatLon.lon.toFixed(6);
-                document.getElementById("ne_input" ).value= neLatLon.lat.toFixed(6) + " , " + neLatLon.lon.toFixed(6);
-
                 var iBearingY = nwLatLon.bearingTo(swLatLon);
                 var iBearingX = nwLatLon.bearingTo(neLatLon);
                 var iDistanceY = nwLatLon.distanceTo(swLatLon);
@@ -112,7 +156,7 @@ function displayFloorplan(imageFilepath, coordinates){
 
                 canvas.setMap(null);
 
-                canvas = new FPOverlay( 
+                canvas = new FPOverlay(
                     image, 
                     map,
                     {x: iBearingX, y: iBearingY},
@@ -122,14 +166,15 @@ function displayFloorplan(imageFilepath, coordinates){
         });
     });
 
-    canvas = new FPOverlay( 
-        image, 
-        map,
-        {x: bearingX, y: bearingY},
-        {sw: path[0], nw: path[1], ne: path[2], se: path[3]}
-    );
-
-    clearMarkers();
+    google.maps.event.addDomListener(image,'load',function(){
+        console.log("Image load listener called");
+        canvas = new FPOverlay( 
+            image, 
+            map,
+            {x: bearingX, y: bearingY},
+            {sw: path[0], nw: path[1], ne: path[2], se: path[3]}
+        );
+    });
 }
 
 function clearFloorPlan(){
@@ -140,5 +185,14 @@ function clearFloorPlan(){
     if(polygon){
         polygon.setMap(null);
         polygon = null;
+    }
+}
+
+function setPolygonEditable(state){
+    if(typeof state !== 'boolean'){
+        return;
+    }
+    if(polygon){
+        polygon.setEditable(state);
     }
 }
