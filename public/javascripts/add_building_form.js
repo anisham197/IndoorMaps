@@ -29,14 +29,9 @@ function initMap() {
   var infowindow = new google.maps.InfoWindow();
   var infowindowContent = document.getElementById('infowindow-content');
   infowindow.setContent(infowindowContent);
-  var marker = new google.maps.Marker({
-    map: map,
-    anchorPoint: new google.maps.Point(0, -29),
-  });
 
   autocomplete.addListener('place_changed', function() {
     infowindow.close();
-    marker.setVisible(false);
     var place = autocomplete.getPlace();
     if (!place.geometry) {
       // User entered the name of a Place that was not suggested and
@@ -45,19 +40,10 @@ function initMap() {
       return;
     }
 
-    // If the place has a geometry, then present it on a map.
-    if (place.geometry.viewport) {
-      map.fitBounds(place.geometry.viewport);
-    } else {
-      map.setCenter(place.geometry.location);
-    }
-
+    map.setCenter(place.geometry.location);
+    map.setZoom(19);
     var latitude = place.geometry.location.lat();
     var longitude = place.geometry.location.lng();
-    map.setZoom(19);
-    marker.setPosition(place.geometry.location);
-    marker.setVisible(true);
-
 
     var address = '';
     if (place.address_components) {
@@ -68,9 +54,10 @@ function initMap() {
       ].join(' ');
     }
 
-    // infowindowContent.children['place-name'].textContent = place.name;
-    // infowindowContent.children['place-address'].textContent = address;
-    // infowindow.open(map, marker);
+    infowindowContent.children['place-name'].textContent = place.name;
+    infowindowContent.children['place-address'].textContent = address;
+    infowindow.setPosition(place.geometry.location);
+    infowindow.open(map);
 
     // Enable input fields for 3 coordinates of building
     document.getElementById('sw').disabled = false;

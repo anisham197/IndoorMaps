@@ -20,11 +20,11 @@ block content
           .mdl-textfield.mdl-js-textfield
             input.mdl-textfield__input(type="number" name="num_rooms" placeholder="No. of rooms" required="" min="1")
           .mdl-textfield.mdl-js-textfield
-            input#sw.mdl-textfield__input(type="text" placeholder="Southwest Coordinate" required="" disabled)
+            input#sw.mdl-textfield__input(type="text" placeholder="Southwest Coordinate" required="" disabled readonly)
           .mdl-textfield.mdl-js-textfield
-            input#nw.mdl-textfield__input(type="text" placeholder="Northwest Coordinate" required="" disabled)
+            input#nw.mdl-textfield__input(type="text" placeholder="Northwest Coordinate" required="" disabled readonly)
           .mdl-textfield.mdl-js-textfield
-            input#ne.mdl-textfield__input(type="text" placeholder="Northeast Coordinate" required="" disabled)
+            input#ne.mdl-textfield__input(type="text" placeholder="Northeast Coordinate" required="" disabled readonly)
           input#coordinates(type="hidden" name="coordinates")
           br
           input.rc-button.rc-button-submit(type="submit" value="Submit")
