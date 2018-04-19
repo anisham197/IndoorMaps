@@ -30,6 +30,10 @@ function showFloorplanWithMarkersForLevel(level, markerDraggable){
         );
     });
 
+    if(buildingInfo == null) {
+        console.log("no building info");
+        return;
+    }
     if(!buildingInfo.floors[floorNum-1].rooms) {
         console.log("no rooms added");
         return;
@@ -57,7 +61,6 @@ function showFloorplanWithMarkersForLevel(level, markerDraggable){
                         var lng = evt.latLng.lng() ;
                         console.log("marker dropped: Current Lat: ' " + lat + " ' Current Lng: ' " + lng);
                         roomMap[roomId] = { lat: lat, lng: lng };
-                        // console.log(markers[roomId].getPosition().lat());
                     });
                 }
             }
@@ -78,35 +81,6 @@ function showFloorplanWithMarkersForLevel(level, markerDraggable){
                     });
                 }
             }
-
-            // if((!markerDraggable && !staticMarkers[roomId]) || (markerDraggable && !markers[roomId])) {
-            //     var marker = new google.maps.Marker({
-            //         position: {lat: room.roomLocation.lat, lng: room.roomLocation.lng},
-            //         draggable: markerDraggable,
-            //         map: map,
-            //         title: room.roomName
-            //     });
-    
-            //     if(markerDraggable) {
-            //         markers[roomId] = marker;
-            //         google.maps.event.addListener(markers[roomId], 'dragend', function(evt){
-            //             var lat = evt.latLng.lat();
-            //             var lng = evt.latLng.lng() ;
-            //             console.log("marker dropped: Current Lat: ' " + lat + " ' Current Lng: ' " + lng);
-            //             roomMap[roomId] = { lat: lat, lng: lng };
-            //             // console.log(markers[roomId].getPosition().lat());
-            //         });
-            //     }
-            //     else {
-            //         staticMarkers[roomId] = marker;
-            //     }
-            // }
-            // else {
-            //     console.log("marker already present in object");
-            //     if(!markerDraggable) {
-            //         staticMarkers[roomId].setMap(map);
-            //     }
-            // }
         }
     });
 }

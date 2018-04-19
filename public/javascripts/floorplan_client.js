@@ -23,8 +23,9 @@ $(document).ready(function(){
     floorplanInfo = result.floorplans;
     console.log(floorplanInfo);
     console.log(result.msg);
-    if (floorplanInfo == null){
-      accordion[1].disabled = true;
+    accordion[0].disabled = false;
+    if (floorplanInfo != null){
+      accordion[1].disabled = false;
     }
   });
 
