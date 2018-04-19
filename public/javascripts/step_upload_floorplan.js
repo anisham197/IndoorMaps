@@ -43,18 +43,7 @@ function overlayFloorplan(imageFileEvent) {
 	selectedFile = document.getElementById('image_file').files[0];
 	console.log("Selected File Name");
 	console.log(selectedFile.name);
-	//save image to server
 	editFloorplan(selectedFile,coordinates);
-
-	// TODO uncomment
-	// saveImage(function(result){
-	// 	console.log("image saved");
-	// 	console.log(result);
-	// 	imageFilepath = result.filepath;   
-	// 	// code to display map
-	// 	editFloorplan(imageFilepath, coordinates);
-	// 	imageFileEvent.target.value = '';
-	// });
 	return;               
 }
 

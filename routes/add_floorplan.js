@@ -75,27 +75,11 @@ router.get('/getBuildingInfo', function(req,res, next) {
         console.log('Error getting documents', err);
         return res.status(500).send("Error getting document: ", error);
     });
-  //return object;
 });
 
 router.get('/getFloorplanInfo', function(req,res, next) {
   var encryptBuildingId = req.query.id;
   var buildingId = helper.decrypt(encryptBuildingId);
-
-  // db.collection("floorplans").doc(buildingId).onSnapshot(function(docSnapshot) {
-  //     if (docSnapshot.exists) {
-  //       console.log(docSnapshot.data());
-  //       console.log("Anisha");
-  //       return res.status(200).send( {msg: "Success", floorplans: docSnapshot.data()} );
-  //     } 
-  //     else {
-  //       console.log(docSnapshot);
-  //       return res.status(200).send( {msg: "No Such Document", floorplans: null} );
-  //     }
-  // }, function(err) {
-  //   console.log("Encountered error");
-  //   //return res.status(500).send("Error getting document: ", error);
-  // });
 
   db.collection("floorplans").doc(buildingId).get()
     .then(function(doc) {
@@ -226,46 +210,6 @@ router.post('/uploadimages', function(req, res, next) {
   });
 
   stream.end(floorplanImage.data);
-
-  // var file;
-  // if(fs.existsSync(file = dir + '/' + filename)) {
-  //   console.log("file exists");
-  //   fs.unlink(file, (err) => {
-  //     if (err) 
-  //       throw err;
-  //     console.log('file was deleted');
-  //   });
-  // }
-  // else if(fs.existsSync(file = dir + '/' + filename + '.' + 'jpg')) {
-  //   console.log("jpg file exists");
-  //   fs.unlink(file, (err) => {
-  //     if (err)
-  //       throw err;
-  //     console.log('file was deleted');
-  //   });
-  // }
-  // if(fs.existsSync(file = dir + '/' + filename + '.' + 'jpeg'))
-  // {
-  //   console.log("jpeg file exists");
-  //   fs.unlink(file, (err) => {
-  //     if (err)
-  //       throw err;
-  //     console.log('file was deleted');
-  //   });
-  // }
-
-  // console.log("\nfile path " + filePath);
-  
-  // // Use the mv() method to place the file somewhere on your server
-  // fs.writeFile(filePath, floorplanImage.data, (err) => {
-  //   if (err){
-  //     console.log(err);
-  //     return res.status(500).send("Internal Server Error");
-  //   }
-  //   console.log("File saved");
-  //   res.status(200).send( {msg: "Success", filepath: filename} );
-  // });
-
 });
 
 
