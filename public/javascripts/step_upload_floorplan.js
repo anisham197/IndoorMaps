@@ -13,6 +13,7 @@ function onFloorSelected() {
 	clearFloorPlan();
 	var selectFloor = document.getElementById('select_floor_image');
 	floorNum = selectFloor.options[selectFloor.selectedIndex].value;
+
 	if (floorplanInfo != null && floorplanInfo[floorNum] != null){
 		console.log(floorplanInfo[floorNum]);
 		showFloorplanWithMarkersForLevel(floorNum, markerDraggable);
@@ -21,7 +22,10 @@ function onFloorSelected() {
 }
 
 
-function displayExistingFloorplanAlert() {
+function displayExistingFloorplanAlert(event) {
+	// allow reslecting same image and still trigger a re-render
+	$(this).val(null);
+
 	if (floorplanInfo != null && floorplanInfo[floorNum] != null){
 		console.log(floorplanInfo[floorNum]);
 		alert("Warning: Uploading a new floorplan will cause all existing floorplan " +
@@ -32,6 +36,7 @@ function displayExistingFloorplanAlert() {
 
 function overlayFloorplan(imageFileEvent) {
 	clearFloorPlan();
+	document.getElementById('select_floor_image').disabled = true;
 
 	// if (floorplanInfo != null && floorplanInfo[floorNum] != null){
 	// 	//TODO: Delete exisiting POI data, image and coordinates data gets overwritten
@@ -41,21 +46,12 @@ function overlayFloorplan(imageFileEvent) {
 	selectedFile = document.getElementById('image_file').files[0];
 	console.log("Selected File Name");
 	console.log(selectedFile.name);
-	//save image to server
-	saveImage(function(result){
-		console.log("image saved");
-		console.log(result);
-		imageFilepath = result.filepath;   
-		// code to display map
-		editFloorplan(imageFilepath, coordinates);
-		imageFileEvent.target.value = '';
-	});
+	editFloorplan(selectedFile,coordinates);
 	return;               
 }
 
   
 function saveImage(callback) {
-  
 	var data = new FormData();
 	data.append('floorplanImage',selectedFile);
 	data.append('floor', floorNum);
@@ -69,8 +65,8 @@ function saveImage(callback) {
 		processData: false,
 		method: 'POST',
 		type: 'POST', // For jQuery < 1.9
-		success: function(data){
-			callback(data);
+		success: function(res){
+			callback(res);
 		},
 		error : function(error) {
 			console.log(error);
@@ -81,35 +77,48 @@ function saveImage(callback) {
   
 
 function saveFloorplan() {
+	if(!$("#image_file").val()){
+		alert("Choose an image first");
+		return;
+	}
+	document.getElementById('loader').style.display = "block";
 	console.log("Save Floorplan called");
-	var data = {
-		'imageFilepath': imageFilepath,
-		'floorNum': floorNum,
-		'coordinates': getFinalCoordinates()
-	};
+	console.log("Step1: save image to Google Cloud Storage");
+	saveImage(function(result){
+		console.log("Step 1 completed!");
+		console.log("image saved");
+		console.log("Step2: save coordinated and floorplan path to Firebase");
+		console.log(result);
+		imageFilepath = result.filepath;   
+		var data = {
+			'imageFilepath': imageFilepath,
+			'floorNum': floorNum,
+			'coordinates': getFinalCoordinates()
+		};
+		jQuery.ajax({
+			url: '/addfloorplan/savefloorplan',
+			data: {data: JSON.stringify(data)},
+			cache: false,
+			method: 'POST',
+			type: 'POST', // For jQuery < 1.9
+			success: function(data){
+				console.log("Step 2 completed!");
+				console.log(data);
+				alert("Floor plan updated");
+				//clearFloorPlan();
+				setPolygonEditable(false);
+				$("#image_file").val(null);
+				document.getElementById('select_floor_image').disabled = false;
+				document.getElementById('loader').style.display = "none";
+			},
+			error : function(error) {
+				console.log(error);
+				alert("Error! Try again later.");
+				document.getElementById('select_floor_image').disabled = false;
+				document.getElementById('loader').style.display = "none";
+			}
+		});
 
-	jQuery.ajax({
-		url: '/addfloorplan/savefloorplan',
-		data: {data: JSON.stringify(data)},
-		cache: false,
-		method: 'POST',
-		type: 'POST', // For jQuery < 1.9
-		success: function(data){
-			console.log(data);
-			alert("Floor plan updated");
-			clearFloorPlan();
-		},
-		error : function(error) {
-			console.log(error);
-			alert("Error! Try again later.");
-		}
+		accordion[1].disabled = false;
 	});
-	accordion[1].disabled = false;
 }
-
-
-// function clearStaticMarkers() {
-// 	for (var key in staticMarkers) {
-//         staticMarkers[key].setMap(null);
-//     }
-// }

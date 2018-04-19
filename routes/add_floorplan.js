@@ -5,6 +5,8 @@ var router = express.Router();
 
 var admin = require('firebase-admin');
 var db = admin.firestore();
+var bucket = admin.storage().bucket();
+
 var Building = require('../models/building_model.js')
 
 var helper = require('../helpers.js');
@@ -32,8 +34,6 @@ router.get('/', function(req, res, next) {
     }).catch(function(error) {
       console.log("Error getting document:", error);
   });
-
-  
 });
 
 
@@ -86,27 +86,11 @@ router.get('/getBuildingInfo', function(req,res, next) {
         console.log('Error getting documents', err);
         return res.status(500).send("Error getting document: ", error);
     });
-  //return object;
 });
 
 router.get('/getFloorplanInfo', function(req,res, next) {
   var encryptBuildingId = req.query.id;
   var buildingId = helper.decrypt(encryptBuildingId);
-
-  // db.collection("floorplans").doc(buildingId).onSnapshot(function(docSnapshot) {
-  //     if (docSnapshot.exists) {
-  //       console.log(docSnapshot.data());
-  //       console.log("Anisha");
-  //       return res.status(200).send( {msg: "Success", floorplans: docSnapshot.data()} );
-  //     } 
-  //     else {
-  //       console.log(docSnapshot);
-  //       return res.status(200).send( {msg: "No Such Document", floorplans: null} );
-  //     }
-  // }, function(err) {
-  //   console.log("Encountered error");
-  //   //return res.status(500).send("Error getting document: ", error);
-  // });
 
   db.collection("floorplans").doc(buildingId).get()
     .then(function(doc) {
@@ -202,49 +186,37 @@ router.post('/uploadimages', function(req, res, next) {
   if (!fs.existsSync(dir)){
     fs.mkdirSync(dir);
   }
-  var filename = buildingId + '_' + floorNum;
+
   var fileExt = floorplanImage.name.split('.').pop().toLowerCase();
-  var filePath = dir + '/' + filename + '.' + fileExt;
+  var filename = buildingId + '_' + floorNum + '.' + fileExt;
+  var filePath = dir + '/' + filename ;
 
-  var file;
-  if(fs.existsSync(file = dir + '/' + filename + '.' + 'png')) {
-    console.log("png file exists");
-    fs.unlink(file, (err) => {
-      if (err) 
-        throw err;
-      console.log('file was deleted');
-    });
-  }
-  else if(fs.existsSync(file = dir + '/' + filename + '.' + 'jpg')) {
-    console.log("jpg file exists");
-    fs.unlink(file, (err) => {
-      if (err)
-        throw err;
-      console.log('file was deleted');
-    });
-  }
-  if(fs.existsSync(file = dir + '/' + filename + '.' + 'jpeg'))
-  {
-    console.log("jpeg file exists");
-    fs.unlink(file, (err) => {
-      if (err)
-        throw err;
-      console.log('file was deleted');
-    });
-  }
-
-  console.log("\nfile path " + filePath);
+  var gcsFile = bucket.file(filename);
   
-  // Use the mv() method to place the file somewhere on your server
-  fs.writeFile(filePath, floorplanImage.data, (err) => {
-    if (err){
-      console.log(err);
-      return res.status(500).send("Internal Server Error");
+  const stream = gcsFile.createWriteStream({
+    metadata: {
+      contentType: floorplanImage.mimetype
     }
-    console.log("File saved");
-    res.status(200).send( {msg: "Success", filepath: filename + '.' + fileExt} );
   });
 
+  stream.on('error', (err) => {
+    console.log("error");
+    res.status(400).send( {msg: "Error", error: err} );
+  });
+
+  stream.on('finish', () => {
+    gcsFile.makePublic().then(() => {
+      console.log(getPublicUrl(filename));
+      res.status(200).send( {msg: "Success", filepath: getPublicUrl(filename)} );
+    })
+    .catch( err => {
+      console.log("error");
+      console.log(err);
+      res.status(400).send( {msg: "Error", error: err} );
+    });
+  });
+
+  stream.end(floorplanImage.data);
 });
 
 
@@ -267,5 +239,9 @@ router.post('/savefloorplan', function(req, res,next) {
     return res.status(500).send("Error updating document: ", error);
   });
 });
+
+function getPublicUrl (filename) {
+  return `https://storage.googleapis.com/datastore-9fd58.appspot.com/${filename}`;
+}
 
 module.exports = router;

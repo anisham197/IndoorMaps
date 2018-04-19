@@ -10,7 +10,8 @@ var fileUpload = require('express-fileupload');
 var admin = require('firebase-admin');
 var serviceAccount = require('./serviceAccountKey.json');
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: "datastore-9fd58.appspot.com"
 });
 
 var login = require('./routes/auth');

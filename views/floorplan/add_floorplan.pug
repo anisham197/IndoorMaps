@@ -15,6 +15,7 @@ block content
     div#container
       div#floorplan-form
         p#building-name #{building.name}
+        .loader(id="loader")
         button.accordion(disabled) Upload Floorplan
         include upload_image
         button.accordion(disabled) Add Points of Interest

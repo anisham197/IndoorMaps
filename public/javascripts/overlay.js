@@ -10,26 +10,32 @@ function getFinalCoordinates(){
 function showFloorplanWithMarkersForLevel(level, markerDraggable){
     // markerDraggable is boolean variable to distinguish between step 1 and 2 
     var image = new Image();
-    image.src = floorplanInfo[level].imageFilepath;
-    var coordinates = {
-        sw: floorplanInfo[level].sw ,
-        se: floorplanInfo[level].se ,
-        nw: floorplanInfo[level].nw ,
-        ne: floorplanInfo[level].ne
-    };
-    var bearingY = LatLon(coordinates.nw.lat, coordinates.nw.lng).bearingTo(LatLon(coordinates.sw.lat, coordinates.sw.lng));
-    var bearingX = LatLon(coordinates.nw.lat, coordinates.nw.lng).bearingTo(LatLon(coordinates.ne.lat, coordinates.ne.lng));
-
-    google.maps.event.addDomListener(image,'load',function(){
-        console.log("Image load listener called");
-        canvas = new FPOverlay( 
-            image, 
-            map,
-            {x: bearingX, y: bearingY},
-            {sw: coordinates.sw, nw: coordinates.nw, ne: coordinates.ne, se: coordinates.se}
-        );
+    // nocache path param to prevent loading cached image
+    getFloorplanInfo(function(result){
+        floorplanInfo = result.floorplans;        
+        image.src = floorplanInfo[level].imageFilepath+'?nocache='+(new Date().getTime());
+        document.getElementById('loader').style.display = "block";
+        var coordinates = {
+            sw: floorplanInfo[level].sw,
+            se: floorplanInfo[level].se,
+            nw: floorplanInfo[level].nw,
+            ne: floorplanInfo[level].ne
+        };
+        var bearingY = LatLon(coordinates.nw.lat, coordinates.nw.lng).bearingTo(LatLon(coordinates.sw.lat, coordinates.sw.lng));
+        var bearingX = LatLon(coordinates.nw.lat, coordinates.nw.lng).bearingTo(LatLon(coordinates.ne.lat, coordinates.ne.lng));
+        google.maps.event.clearListeners(image, 'load');
+        google.maps.event.addDomListener(image,'load',function(){
+            console.log("Image load listener called");
+            document.getElementById('loader').style.display = "none";
+            canvas = new FPOverlay( 
+                image, 
+                map,
+                {x: bearingX, y: bearingY},
+                {sw: coordinates.sw, nw: coordinates.nw, ne: coordinates.ne, se: coordinates.se}
+            );
+        });
     });
-
+       
     if(buildingInfo == null) {
         console.log("no building info");
         return;
@@ -85,7 +91,7 @@ function showFloorplanWithMarkersForLevel(level, markerDraggable){
     });
 }
 
-function editFloorplan(imageFilepath, coordinates){
+function editFloorplan(imageFile, coordinates){
 
     if(canvas){
         console.log("before clear canvas not null");
@@ -95,12 +101,17 @@ function editFloorplan(imageFilepath, coordinates){
         console.log("canvas not null");
     }
     console.log("editFloorplan() function called");
-    console.log("filepath " + imageFilepath);
+    //console.log("filepath " + imageFilepath);
 
     var image = new Image();
-    image.src = imageFilepath;
+    //image.src = imageFilepath;
 
-    
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        image.src = e.target.result;
+    };
+    reader.readAsDataURL(imageFile);
+
     polygon =  new google.maps.Polygon({
         fillColor: 'white',
         strokeWeight: 1,
@@ -227,5 +238,14 @@ function clearFloorPlan(){
     if(polygon){
         polygon.setMap(null);
         polygon = null;
+    }
+}
+
+function setPolygonEditable(state){
+    if(typeof state !== 'boolean'){
+        return;
+    }
+    if(polygon){
+        polygon.setEditable(state);
     }
 }

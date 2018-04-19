@@ -27,6 +27,7 @@ $(document).ready(function(){
     if (floorplanInfo != null){
       accordion[1].disabled = false;
     }
+    console.log(result);
   });
 
   //Get details of all rooms
@@ -38,7 +39,7 @@ $(document).ready(function(){
 function initMap() {
   var location = {lat: coordinates.nw.lat, lng: coordinates.nw.lng};
   map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 19,
+    zoom: 20,
     center: location,
     clickableIcons: false,
     zoomControl: true,
