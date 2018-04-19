@@ -16,16 +16,20 @@ block content
       div#floorplan-form
         p#building-name #{building.name}
         .loader(id="loader")
-        button.accordion Upload Floorplan
+        button.accordion(disabled) Upload Floorplan
         include upload_image
-        button.accordion Add Points of Interest
+        button.accordion(disabled) Add Points of Interest
         include add_pois
+        br
+        br
+        button#exit(type="button") Exit
       div#map        
     div(style='clear:both')
 
 block script
     script(src='javascripts/floorplan_client.js')
     script(src='javascripts/step_upload_floorplan.js')
+    script(src='javascripts/step_add_pois.js')
     script(src='javascripts/overlay.js')
     script(src='javascripts/fpoverlay.js')
     script(src='javascripts/latlng.js')

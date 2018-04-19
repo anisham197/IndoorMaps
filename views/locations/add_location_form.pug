@@ -1,30 +1,30 @@
 extends ../layout
 
 block title
-  title #{title}
+	title #{title}
 
 block head
-    link(rel='stylesheet', href='/stylesheets/form.css')
+	link(rel='stylesheet', href='/stylesheets/form.css')
 
 block content
-    include ../nav_drawer.pug
+	include ../nav_drawer.pug
     
-    main#form_main.web-main.mdl-layout__content
-      br
-      br
-      br
-      .mdl-grid.portfolio-max-width
-        .mdl-cell.mdl-cell--5-col.mdl-cell--hide-tablet.mdl-cell--hide-phone
-        .mdl-cell.mdl-cell--5-col.mdl-card.mdl-shadow--4dp
-          #form_create_class
-            h3 Add a Location
-            form(method="POST" action="/addlocation")
-              .mdl-textfield.mdl-js-textfield
-                input.mdl-textfield__input(type="text" name="name" placeholder="Name of location" required="")
-              .mdl-textfield.mdl-js-textfield
-                input.mdl-textfield__input(type="text" name="number_buildings" placeholder="Number of buildings" required="")
-              .mdl-textfield.mdl-js-textfield
-                input.mdl-textfield__input(type="text" name="city" placeholder="City" required="")
-              br
-              input.rc-button.rc-button-submit(type="submit" value="Submit")
-            br
+	main#form_main.web-main.mdl-layout__content
+		br
+		br
+		br
+		.mdl-grid.portfolio-max-width
+			.mdl-cell.mdl-cell--5-col.mdl-cell--hide-tablet.mdl-cell--hide-phone
+			.mdl-cell.mdl-cell--5-col.mdl-card.mdl-shadow--4dp
+				#form_create_class
+					h3 Add a Location
+					form(method="POST" action="/addlocation" autocomplete="off")
+						.mdl-textfield.mdl-js-textfield
+							input.mdl-textfield__input(type="text" name="name" placeholder="Name of location" required="")
+						.mdl-textfield.mdl-js-textfield
+							input.mdl-textfield__input(type="number" name="number_buildings" placeholder="Number of buildings" required="" min="1")
+						.mdl-textfield.mdl-js-textfield
+							input.mdl-textfield__input(type="text" name="city" placeholder="City" required="")
+						br
+						input.rc-button.rc-button-submit(type="submit" value="Submit")
+					br

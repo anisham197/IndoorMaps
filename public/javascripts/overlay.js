@@ -7,8 +7,8 @@ function getFinalCoordinates(){
     return finalCoordinates;
 }
 
-function showFloorplanWithMarkersForLevel(level){
-    //TODO: add part to display POIs
+function showFloorplanWithMarkersForLevel(level, markerDraggable){
+    // markerDraggable is boolean variable to distinguish between step 1 and 2 
     var image = new Image();
     // nocache path param to prevent loading cached image
     getFloorplanInfo(function(result){
@@ -35,7 +35,60 @@ function showFloorplanWithMarkersForLevel(level){
             );
         });
     });
-        
+       
+    if(buildingInfo == null) {
+        console.log("no building info");
+        return;
+    }
+    if(!buildingInfo.floors[floorNum-1].rooms) {
+        console.log("no rooms added");
+        return;
+    }
+    buildingInfo.floors[floorNum-1].rooms.forEach( function (room) {
+        var roomId = room.roomId;
+        //Add room name only if marker hasn't been added for that room
+        if(room.roomLocation ) {
+            // For draggable markers
+            if(markerDraggable) {
+                // If marker already created, show it on map
+                if(markers[roomId]){
+                    markers[roomId].setMap(map);
+                }
+                // Create marker and attach listener
+                else {
+                    markers[roomId] = new google.maps.Marker({
+                        position: {lat: room.roomLocation.lat, lng: room.roomLocation.lng},
+                        draggable: markerDraggable,
+                        map: map,
+                        title: room.roomName
+                    });
+                    google.maps.event.addListener(markers[roomId], 'dragend', function(evt){
+                        var lat = evt.latLng.lat();
+                        var lng = evt.latLng.lng() ;
+                        console.log("marker dropped: Current Lat: ' " + lat + " ' Current Lng: ' " + lng);
+                        roomMap[roomId] = { lat: lat, lng: lng };
+                    });
+                }
+            }
+            // For static markers
+            else {
+                // If marker already created, show it on map
+                if(staticMarkers[roomId]){
+                    staticMarkers[roomId].setMap(map);
+                }
+                // Create marker
+                else {
+                    staticMarkers[roomId] = new google.maps.Marker({
+                        position: {lat: room.roomLocation.lat, lng: room.roomLocation.lng},
+                        draggable: markerDraggable,
+                        map: map,
+                        icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                        title: room.roomName
+                    });
+                }
+            }
+        }
+    });
 }
 
 function editFloorplan(imageFile, coordinates){

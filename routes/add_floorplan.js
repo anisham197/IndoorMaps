@@ -49,7 +49,8 @@ router.get('/getBuildingInfo', function(req,res, next) {
           floorNum = doc.data().metadata.floor;
           var room = {
             roomId: doc.id,
-            roomName: doc.data().name 
+            roomName: doc.data().name ,
+            roomLocation: doc.data().location
           };
 
           var rooms = floormap.get(floorNum);
@@ -58,12 +59,22 @@ router.get('/getBuildingInfo', function(req,res, next) {
           rooms.push(room);
           floormap.set(floorNum, rooms);
         });
-        floormap.forEach(function(value, key) {
+
+        for(var i = 1; i <= numFloors; i++) {
+          var value = floormap.get(i.toString());
+          console.log(i);
+          console.log(value);
           floors.push({
-            'floorNum': key,
+            'floorNum': i,
             'rooms': value
           })
-        });
+        }
+        // floormap.forEach(function(value, key) {
+        //   floors.push({
+        //     'floorNum': key,
+        //     'rooms': value
+        //   })
+        // });
         object = {
           'numFloors': numFloors,
           'floors': floors
@@ -96,36 +107,32 @@ router.get('/getFloorplanInfo', function(req,res, next) {
 });
 
 
-// Request body contains roomId and location 
-// Ex. data: { roomId: 4ijtMdXC96jyn9VhtRr8,
-//             location: {
-//                lat: 13.4454,
-//                lng: 77.343
-//              }
-//            }
+// Request body data structure 
+//  data: { 
+//  [roomId] : [location],
+//  [roomId] : [location],
+//  }
+//  Ex. data: {
+//  p2oSQF3VIeNVZYykl3AY: { lat: 13.031, lng: 77.564 },
+//  ehTz7kfCeXvm8whmxGB6: { lat: 13.031, lng: 77.564 }
+//  }
 router.post('/saveRoomLoc', function(req, res, next) {
-  var object = JSON.parse(req.body.data);
-  var roomId = object.roomId;
-  var location = object.location;
-  var docRef = db.collection('rooms').doc(roomId);
-  docRef.get()
-    .then((docSnapshot) => {
-      if (docSnapshot.exists) {
-        docRef.update({
-          'location': location
-        }).then(function() {
-            return res.status(200).send("Document successfully updated!");
-          }).catch(function(error) {
-          return res.status(500).send("Error updating document ", error);
-        })
-      } else {
-        console.log("doc doesnt exist");
-        return res.status(500).send("Document doesn't exist ", error);
-      }
+  console.log("save room loc endpoint");
+  var data = JSON.parse(req.body.data);
+  console.log(data);
+
+  var batch = db.batch();
+  for (var roomId in data) {
+    var location = data[roomId];
+    var docRef = db.collection('rooms').doc(roomId);
+    batch.update(docRef, { 'location': location });
+  }
+
+  batch.commit().then(function() {
+    return res.status(200).send("Document successfully updated!");
   }).catch(function(error) {
-    return res.status(500).send("Error getting document ", error);
+    return res.status(500).send("Error updating document ", error);
   });
-  return res.status(500).send("Error occured while saving room locations", error);
 });
 
 

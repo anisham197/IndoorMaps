@@ -1,4 +1,5 @@
 var selectedFile, floorNum, imageFilepath;
+var staticMarkers = {};
 
 $("#select_floor_image").change(onFloorSelected);
 $("#image_file").click(displayExistingFloorplanAlert);
@@ -7,13 +8,15 @@ $("#floorplan_save_button").click(saveFloorplan);
 
 
 function onFloorSelected() {
-	clearFloorPlan();	
+	var markerDraggable = false;
+	clearMarkers();
+	clearFloorPlan();
 	var selectFloor = document.getElementById('select_floor_image');
 	floorNum = selectFloor.options[selectFloor.selectedIndex].value;
 
 	if (floorplanInfo != null && floorplanInfo[floorNum] != null){
 		console.log(floorplanInfo[floorNum]);
-		showFloorplanWithMarkersForLevel(floorNum);
+		showFloorplanWithMarkersForLevel(floorNum, markerDraggable);
 	}
 	document.getElementById('image_file').disabled = false;
 }
@@ -52,6 +55,7 @@ function saveImage(callback) {
 	var data = new FormData();
 	data.append('floorplanImage',selectedFile);
 	data.append('floor', floorNum);
+	console.log(data);
 
 	jQuery.ajax({
 		url: '/addfloorplan/uploadimages',

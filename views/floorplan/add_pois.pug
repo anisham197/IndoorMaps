@@ -1,3 +1,12 @@
 #panel
-    button#btn_picker
-        | Picker
+	select#select_floor_pois(name="floor")
+		option(value="" disabled selected hidden) Select Floor
+		- for(var i = 1; i <= building.numFloors; i++) {
+			option(value=i) #{i}
+		- }
+	br
+	select#select_room(name="room" disabled)
+		option(value="" disabled selected hidden) Select Room
+	br
+	br
+	button#save_pois(type="button") Save POIs
