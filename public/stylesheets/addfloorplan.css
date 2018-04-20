@@ -4,14 +4,14 @@ html, body, #container {
 }
 
 #floorplan-form {
-  width: 30%;
+  width: 25%;
   height: 100%;
   float:left;
   /* background-color: red; */
 }
 
 #map {
-  width: 70%;
+  width: 75%;
   height: 100%;
   float:right;
   position: relative;

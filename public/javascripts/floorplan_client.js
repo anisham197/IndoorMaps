@@ -27,11 +27,15 @@ $(document).ready(function(){
     if (floorplanInfo != null){
       accordion[1].disabled = false;
     }
-    console.log(result);
   });
 
   //Get details of all rooms
-  getBuildingInfo();
+  getBuildingInfo(function(result){
+    buildingInfo= result.buildingInfo;
+    console.log(buildingInfo);
+    console.log(result.msg);
+  });
+
   
 });
 
@@ -67,15 +71,16 @@ function getFloorplanInfo(callback) {
 }
 
 
-function getBuildingInfo() {
+function getBuildingInfo(callback) {
   jQuery.ajax({
       url: '/addfloorplan/getBuildingInfo?id=' + buildingEncryptId,
       cache: false,
       method: 'GET',
       type: 'GET', // For jQuery < 1.9
       success: function(data){
-        buildingInfo = data.buildingInfo;
-        console.log(buildingInfo);
+        callback(data);
+        // buildingInfo = data.buildingInfo;
+        // console.log(buildingInfo);
       },
       error : function(error) {
         console.log(error);

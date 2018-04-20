@@ -34,61 +34,62 @@ function showFloorplanWithMarkersForLevel(level, markerDraggable){
                 {sw: coordinates.sw, nw: coordinates.nw, ne: coordinates.ne, se: coordinates.se}
             );
         });
+
+        getBuildingInfo(function(result){
+            buildingInfo= result.buildingInfo;
+            if(buildingInfo == null || buildingInfo.floors[floorNum-1].rooms == null) {
+                return;
+            }
+        
+            buildingInfo.floors[floorNum-1].rooms.forEach( function (room) {
+                var roomId = room.roomId;
+                //Add room name only if marker hasn't been added for that room
+                if(room.roomLocation ) {
+                    // For draggable markers
+                    if(markerDraggable) {
+                        // If marker already created, show it on map
+                        if(markers[roomId]){
+                            markers[roomId].setMap(map);
+                        }
+                        // Create marker and attach listener
+                        else {
+                            markers[roomId] = new google.maps.Marker({
+                                position: {lat: room.roomLocation.lat, lng: room.roomLocation.lng},
+                                draggable: markerDraggable,
+                                map: map,
+                                title: room.roomName
+                            });
+                            google.maps.event.addListener(markers[roomId], 'dragend', function(evt){
+                                var lat = evt.latLng.lat();
+                                var lng = evt.latLng.lng() ;
+                                console.log("marker dropped: Current Lat: ' " + lat + " ' Current Lng: ' " + lng);
+                                roomMap[roomId] = { lat: lat, lng: lng };
+                            });
+                        }
+                    }
+                    // For static markers
+                    else {
+                        // If marker already created, show it on map
+                        if(staticMarkers[roomId]){
+                            staticMarkers[roomId].setMap(map);
+                        }
+                        // Create marker
+                        else {
+                            staticMarkers[roomId] = new google.maps.Marker({
+                                position: {lat: room.roomLocation.lat, lng: room.roomLocation.lng},
+                                draggable: markerDraggable,
+                                map: map,
+                                icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                                title: room.roomName
+                            });
+                        }
+                    }
+                }
+            });
+        });
     });
        
-    if(buildingInfo == null) {
-        console.log("no building info");
-        return;
-    }
-    if(!buildingInfo.floors[floorNum-1].rooms) {
-        console.log("no rooms added");
-        return;
-    }
-    buildingInfo.floors[floorNum-1].rooms.forEach( function (room) {
-        var roomId = room.roomId;
-        //Add room name only if marker hasn't been added for that room
-        if(room.roomLocation ) {
-            // For draggable markers
-            if(markerDraggable) {
-                // If marker already created, show it on map
-                if(markers[roomId]){
-                    markers[roomId].setMap(map);
-                }
-                // Create marker and attach listener
-                else {
-                    markers[roomId] = new google.maps.Marker({
-                        position: {lat: room.roomLocation.lat, lng: room.roomLocation.lng},
-                        draggable: markerDraggable,
-                        map: map,
-                        title: room.roomName
-                    });
-                    google.maps.event.addListener(markers[roomId], 'dragend', function(evt){
-                        var lat = evt.latLng.lat();
-                        var lng = evt.latLng.lng() ;
-                        console.log("marker dropped: Current Lat: ' " + lat + " ' Current Lng: ' " + lng);
-                        roomMap[roomId] = { lat: lat, lng: lng };
-                    });
-                }
-            }
-            // For static markers
-            else {
-                // If marker already created, show it on map
-                if(staticMarkers[roomId]){
-                    staticMarkers[roomId].setMap(map);
-                }
-                // Create marker
-                else {
-                    staticMarkers[roomId] = new google.maps.Marker({
-                        position: {lat: room.roomLocation.lat, lng: room.roomLocation.lng},
-                        draggable: markerDraggable,
-                        map: map,
-                        icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-                        title: room.roomName
-                    });
-                }
-            }
-        }
-    });
+   
 }
 
 function editFloorplan(imageFile, coordinates){

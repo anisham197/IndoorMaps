@@ -28,6 +28,10 @@ function onFloorSelected() {
     option.selected = true;
     selectRoom.appendChild(option);
 
+    // Return if objects are null
+    if(floorplanInfo == null || buildingInfo == null) {
+        return;
+    }
     // If floorplan hasn't been uploaded for a floor, don't do anything
     if (floorplanInfo[floorNum] == null) {
         return;
@@ -40,6 +44,8 @@ function onFloorSelected() {
         alert("No room added for this floor");
         return;
     }
+
+    showUnsavedMarkers();
 
     selectRoom.disabled = false;
 
@@ -108,13 +114,13 @@ function clearMarkers() {
 }
 
 
-// function showUnsavedMarkers() {
-//     buildingInfo.floors[floorNum-1].rooms.forEach( function (room) {
-//        if(markers[room.roomId]) {
-//            markers[room.roomId].setMap(map);
-//        }
-//     });
-// }
+function showUnsavedMarkers() {
+    buildingInfo.floors[floorNum-1].rooms.forEach( function (room) {
+       if(!room.roomLocation && markers[room.roomId]) {
+           markers[room.roomId].setMap(map);
+       }
+    });
+}
 
 
 function savePois() {
