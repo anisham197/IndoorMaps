@@ -1,0 +1,11 @@
+#panel
+  form(action="")
+    select#select_floor_image(name="floor" required="")
+      option(value="" disabled selected hidden) Select Floor
+      - for(var i = 1; i <= building.numFloors; i++) {
+          option(value=i) #{i}
+      - }
+    br
+    br
+    input#image_file(type='file' name="image" accept=".png" disabled required="")
+    input(type="button" id="floorplan_save_button" value="Save Floorplan" disabled)

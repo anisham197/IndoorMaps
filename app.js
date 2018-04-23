@@ -5,11 +5,13 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var fileUpload = require('express-fileupload');
 
 var admin = require('firebase-admin');
 var serviceAccount = require('./serviceAccountKey.json');
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: "datastore-9fd58.appspot.com"
 });
 
 var login = require('./routes/auth');
@@ -19,6 +21,7 @@ var buildings = require('./routes/buildings');
 var addBuilding = require('./routes/add_building');
 var rooms = require('./routes/rooms');
 var addRoom = require('./routes/add_room');
+var addFloorplan = require('./routes/add_floorplan');
 
 var app = express();
 
@@ -33,6 +36,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'floorplans')));
+app.use(fileUpload());
 app.use(require('express-session')({
   secret: 'aaasp18',
   resave: false,
@@ -46,6 +51,7 @@ app.use('/buildings', buildings);
 app.use('/addbuilding', addBuilding);
 app.use('/rooms', rooms);
 app.use('/addroom', addRoom);
+app.use('/addfloorplan', addFloorplan);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

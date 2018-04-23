@@ -11,6 +11,6 @@
   .mdl-card__actions.mdl-card--border
     a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href='/rooms?id=' + building.encryptId)
       | View 
-    a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href="{{url_for('assignment.assign', class_code=class.class_code)}}")
+    a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href='/addfloorplan?id=' + building.encryptId)
       | Add Floorplan
 

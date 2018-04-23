@@ -1,0 +1,36 @@
+extends ../layout
+
+block title
+    title #{title}
+
+block head
+    link(rel='stylesheet', href='/stylesheets/addfloorplan.css')
+    script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAEd76xkK9HeABLRAe_9mCmoNLs6jc9Zu8')
+
+block content
+    script.
+        var buildingCoordinates = !{JSON.stringify(building.buildingCoordinates)};
+        var numFloors = !{JSON.stringify(building.numFloors)};
+        var buildingEncryptId = !{JSON.stringify(building.encryptId)};
+    div#container
+      div#floorplan-form
+        p#building-name #{building.name}
+        .loader(id="loader")
+        button.accordion(disabled) Upload Floorplan
+        include upload_image
+        button.accordion(disabled) Add Points of Interest
+        include add_pois
+        br
+        br
+        button#exit(type="button") Exit
+      div#map        
+    div(style='clear:both')
+
+block script
+    script(src='javascripts/floorplan_client.js')
+    script(src='javascripts/step_upload_floorplan.js')
+    script(src='javascripts/step_add_pois.js')
+    script(src='javascripts/overlay.js')
+    script(src='javascripts/fpoverlay.js')
+    script(src='javascripts/latlng.js')
+    

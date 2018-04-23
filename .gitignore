@@ -4,4 +4,6 @@ npm-debug.log
 .settings
 .project
 serviceAccountKey.json
+package-lock.json
 app-env
+/floorplans
