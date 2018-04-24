@@ -13,10 +13,7 @@ var router = express.Router();
 // 	}
 router.post('/', function(req, res, next) {
 	var data = req.body;
-	console.log(data);
 	var userId = data.username;
-	console.log("userId " + userId);
-
 	getCurrentRoomId(data, function(result) {
 		if(result == null) {
 			return res.status(500).send("Error getting current roomId");
