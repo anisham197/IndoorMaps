@@ -1,4 +1,3 @@
-#!/bin/bash
 source /home/ubuntu/.bashrc
 
 if [ ! -z "$DEPLOYMENT_GROUP_NAME" ]; then
