@@ -1,7 +1,5 @@
 #!/bin/bash
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+source /home/ubuntu/.bashrc
 
 cd /home/ubuntu/app
 pm2 stop www || true
