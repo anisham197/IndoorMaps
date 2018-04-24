@@ -2,6 +2,9 @@
 
 set -e
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
 cd /home/ubuntu/app
 echo 'Running npm install' >> /home/ubuntu/logs.txt
 
