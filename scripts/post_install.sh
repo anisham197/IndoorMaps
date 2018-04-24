@@ -2,6 +2,8 @@
 set -e
 
 cd /home/ubuntu/app
+echo 'Running npm install' >> /home/ubuntu/logs.txt
+
 npm install
 
 # setup NODE_ENV

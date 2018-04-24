@@ -20,7 +20,9 @@ nvm ls
 node --version
 npm install -g pm2
 pm2 update
+echo 'Completed nvm, node, npm and pm2 installation' >> /home/ubuntu/logs.txt
 EOF
 
 chown ubuntu:ubuntu /tmp/subscript.sh && chmod a+x /tmp/subscript.sh
+echo 'Starting installation of nvm, node, npm and pm2' >> /home/ubuntu/logs.txt
 sleep 1; su - ubuntu -c "/tmp/subscript.sh"
