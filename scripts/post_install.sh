@@ -1,4 +1,5 @@
 #!/bin/bash
+source /home/ubuntu/.bashrc
 set -e
 
 cd /home/ubuntu/app
