@@ -62,6 +62,8 @@ function getRoomLocation (roomId, callback) {
 				if(doc.id.toLowerCase() == roomId) {
 					currentLocation = doc.data().location;
 					currentLocation['roomLabel'] = doc.data().label;
+					currentLocation['buildingId'] = doc.data().buildingId;
+					currentLocation['floorNum'] = doc.data().metadata.floor;
 					console.log(currentLocation);
 					callback(currentLocation);
 				}
