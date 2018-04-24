@@ -1,4 +1,4 @@
-source /home/ubuntu/.bashrc
+#!/bin/bash
 
 if [ ! -z "$DEPLOYMENT_GROUP_NAME" ]; then
  export NODE_ENV=$DEPLOYMENT_GROUP_NAME
