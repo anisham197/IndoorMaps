@@ -7,6 +7,7 @@ apt-get -y update
 cat > /tmp/subscript.sh << EOF
 # START UBUNTU USERSPACE
 echo "Setting up NodeJS Environment"
+# TODO - check if nvm, nodejs is already installed
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.9/install.sh | bash
 echo 'export NVM_DIR="$HOME/.nvm"' >> /home/ubuntu/.bashrc
 echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> /home/ubuntu/.bashrc
@@ -25,4 +26,4 @@ EOF
 
 chown ubuntu:ubuntu /tmp/subscript.sh && chmod a+x /tmp/subscript.sh
 echo 'Starting installation of nvm, node, npm and pm2' >> /home/ubuntu/logs.txt
-sleep 1; su - ubuntu -c "/tmp/subscript.sh"
+# sleep 1; su - ubuntu -c "/tmp/subscript.sh"

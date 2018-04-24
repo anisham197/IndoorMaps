@@ -1,7 +1,6 @@
+#!/bin/bash
+
 source /home/ubuntu/.bashrc
-
-set -e
-
 
 cd /home/ubuntu/app
 echo 'Running npm install' >> /home/ubuntu/logs.txt
