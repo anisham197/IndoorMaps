@@ -12,13 +12,8 @@ var router = express.Router();
 // 		"wifi-fingerprint", finalFingerprint
 // 	}
 router.post('/', function(req, res, next) {
-	// var data = JSON.parse(req.body.data);
-	// var data = JSON.parse(req.body);
-	data = req.body;
+	var data = req.body;
 	console.log(data);
-	// var data = {"group":"WwcCPsNYRnqXhe4WiL8q","username":"xxxx","location":"xxxxx","time":1524497347697,"wifi-fingerprint":[{"mac":"a0:04:60:19:3d:14","rssi":-57},{"mac":"48:ee:0c:d9:5a:10","rssi":-61},{"mac":"c4:12:f5:bb:da:11","rssi":-74},{"mac":"c8:3a:35:33:64:48","rssi":-79},{"mac":"c4:e9:84:84:7a:08","rssi":-84},{"mac":"14:9d:09:70:de:68","rssi":-87}]};
-
-	// var userId = '3T3LV2w65RUUQl24MsHBrhu2t7G2';
 	var userId = data.username;
 	console.log("userId " + userId);
 
