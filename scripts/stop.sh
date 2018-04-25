@@ -1,7 +1,7 @@
 #!/bin/bash
+set -e
+. $HOME/.nvm/nvm.sh
+. $HOME/.profile
+. $HOME/.bashrc
 
-. /home/ubuntu/.nvm/nvm.sh
-. /home/ubuntu/.profile
-. /home/ubuntu/.bashrc
-
-pm2 stop www || true
+pm2 delete www || true

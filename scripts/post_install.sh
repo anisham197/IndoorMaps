@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
-. /home/ubuntu/.nvm/nvm.sh
-. /home/ubuntu/.profile
-. /home/ubuntu/.bashrc
+. $HOME/.nvm/nvm.sh
+. $HOME/.profile
+. $HOME/.bashrc
 
 cd /home/ubuntu/app
 

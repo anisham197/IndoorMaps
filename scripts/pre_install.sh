@@ -2,10 +2,15 @@
 
 # update instance
 apt-get -y update
+
 if [ -x "$(command -v nginx)" ]; then
   echo "nginx already installed"
 else
-cat > /etc/nginx/sites-available/laberinto << EOF
+  echo "nginx not found. Installing."
+  apt-get -y install nginx
+  echo "Installed nginx successfully"
+  service nginx start
+  cat > /etc/nginx/sites-available/laberinto << EOF
 server {
     listen 80;
     server_name beta.vendor.maps.goflo.in;
@@ -17,9 +22,7 @@ server {
     }
 }
 EOF
-  apt-get -y install nginx
-  service nginx start
-
+  rm -rf /etc/nginx/sites-enabled/default
   ln -s /etc/nginx/sites-available/laberinto /etc/nginx/sites-enabled/laberinto
   service nginx restart
 fi

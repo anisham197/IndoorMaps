@@ -1,9 +1,8 @@
 #!/bin/bash
-source /home/ubuntu/.bashrc
-
-. /home/ubuntu/.nvm/nvm.sh
-. /home/ubuntu/.profile
-. /home/ubuntu/.bashrc
+set -e
+. $HOME/.nvm/nvm.sh
+. $HOME/.profile
+. $HOME/.bashrc
 
 echo "Starting installation of nvm, node, npm and pm2 as user '$USER'"
 # START UBUNTU USERSPACE
