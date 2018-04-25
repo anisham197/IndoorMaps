@@ -1,0 +1,211 @@
+user  nginx;
+worker_processes  1;
+
+error_log  /var/log/nginx/error.log warn;
+pid        /var/run/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    include /etc/nginx/conf.d/*.conf;
+
+    # List of application servers
+    upstream manage {
+        server 172.17.0.2:9000;
+    }
+
+    upstream find3server {
+        server 172.17.0.3:8003;
+    }
+
+    upstream find3mqtt {
+        server 172.17.0.3:1883;
+    }
+
+    upstream jenkins {
+        server 172.17.0.5:8080;
+    }
+
+    # Configuration for the servers
+    server {
+
+        # Running port
+        server_name manage.maps.goflo.in;
+
+        # Proxying the connections connections
+        location / {
+            proxy_http_version 1.1;
+            proxy_set_header   Connection "";
+            proxy_pass         http://manage;
+        }
+
+        location /api/websocket/ {
+            proxy_set_header   Upgrade $http_upgrade;
+            proxy_set_header   Connection "upgrade";
+            proxy_http_version 1.1;
+            proxy_pass         http://manage/api/websocket/;
+        }
+    
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/beta.maps.goflo.in/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/beta.maps.goflo.in/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+    server {
+
+        # Running port
+        server_name beta.maps.goflo.in;
+
+        # Proxying the connections connections
+        location / {
+
+            proxy_pass         http://find3server;
+            proxy_redirect     off;
+            proxy_set_header   Host $host;
+            proxy_set_header   X-Real-IP $remote_addr;
+            proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header   X-Forwarded-Host $server_name;
+
+        }
+    
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/beta.maps.goflo.in/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/beta.maps.goflo.in/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+    server {
+
+        # Running port
+        server_name mqtt.maps.goflo.in;
+
+        # Proxying the connections connections
+        location / {
+
+            proxy_pass         http://find3mqtt;
+            proxy_redirect     off;
+            proxy_set_header   Host $host;
+            proxy_set_header   X-Real-IP $remote_addr;
+            proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header   X-Forwarded-Host $server_name;
+
+        }
+    
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/beta.maps.goflo.in/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/beta.maps.goflo.in/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+    server {
+        # Running port
+        server_name cicd.maps.goflo.in;
+
+        # Proxying the connections connections
+        location / {
+
+            # Fix the "It appears that your reverse proxy set up is broken" error.
+            proxy_pass              http://jenkins;
+            proxy_read_timeout      90;
+
+            proxy_redirect          http://127.0.0.1:8080 http://jenkins;
+
+            proxy_set_header        Host $host:$server_port;
+            proxy_set_header        X-Real-IP $remote_addr;
+            proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header        X-Forwarded-Proto $scheme;
+
+
+
+            # Required for new HTTP-based CLI
+            proxy_http_version 1.1;
+            proxy_request_buffering off;
+            # workaround for https://issues.jenkins-ci.org/browse/JENKINS-45651
+            add_header 'X-SSH-Endpoint' 'cicd.maps.goflo.in:50022' always;
+        }
+    
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/beta.maps.goflo.in/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/beta.maps.goflo.in/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+    server {
+    if ($host = beta.maps.goflo.in) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+        listen 80;
+        server_name beta.maps.goflo.in;
+    return 404; # managed by Certbot
+
+
+}
+
+    server {
+    if ($host = cicd.maps.goflo.in) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+        listen 80;
+        server_name cicd.maps.goflo.in;
+    return 404; # managed by Certbot
+
+
+}
+    server {
+    if ($host = manage.maps.goflo.in) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+        listen 0.0.0.0:80;
+        server_name manage.maps.goflo.in;
+    return 404; # managed by Certbot
+
+
+}
+
+    server {
+    if ($host = mqtt.maps.goflo.in) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+        listen 80;
+        server_name mqtt.maps.goflo.in;
+    return 404; # managed by Certbot
+
+
+}}
+
