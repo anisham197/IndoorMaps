@@ -93,7 +93,8 @@ function saveFloorplan() {
 		var data = {
 			'imageFilepath': imageFilepath,
 			'floorNum': floorNum,
-			'coordinates': getFinalCoordinates()
+			'coordinates': getFinalCoordinates(),
+			'locationId': locationId 
 		};
 		jQuery.ajax({
 			url: '/addfloorplan/savefloorplan',

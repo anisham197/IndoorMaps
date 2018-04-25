@@ -136,40 +136,6 @@ router.post('/saveRoomLoc', function(req, res, next) {
 });
 
 
-router.post('/savecoordinates', function(req, res, next) {
-
-  console.log(req.body);
-  console.log("\nbuildingID " + buildingId);
-  var coordinates = JSON.parse(req.body.coordinates);
-
-  var docRef = db.collection('floorplans').doc(buildingId);
-
-  docRef.get()
-    .then((docSnapshot) => {
-      if (docSnapshot.exists) {
-        docRef.update({
-          initialCoordinates: coordinates
-        }).then(function() {
-            return res.status(200).send("Document successfully updated!");
-          }).catch(function(error) {
-          return res.status(500).send("Error updating document: ", error);
-        })
-      } else {
-        console.log("doc doesnt exist");
-        docRef.set({
-          initialCoordinates: coordinates
-        }).then(function() {
-            return res.status(200).send("Document successfully written!");
-          }).catch(function(error) {
-          return res.status(500).send("Error writing document: ", error);
-        }) 
-      }
-  }).catch(function(error) {
-    return res.status(500).send("Error getting document: ", error);
-  });
-});
-
-
 router.post('/uploadimages', function(req, res, next) {
   var floorNum = req.body.floor;
   console.log(req.body);
@@ -225,6 +191,7 @@ router.post('/savefloorplan', function(req, res,next) {
   var object = JSON.parse(req.body.data);
 
   db.collection("floorplans").doc(buildingId).set({
+    locationId: object.locationId,
     [object.floorNum]: {
       imageFilepath: object.imageFilepath,
       sw: object.coordinates.sw,

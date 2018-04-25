@@ -42,9 +42,12 @@ function initMap() {
 
     map.setCenter(place.geometry.location);
     map.setZoom(19);
-    var latitude = place.geometry.location.lat();
-    var longitude = place.geometry.location.lng();
-
+    
+    location_latlng = {
+      lat: place.geometry.location.lat(),
+      lng: place.geometry.location.lng()
+    }
+    document.getElementById('location_latlng').value = JSON.stringify(location_latlng);
     var address = '';
     if (place.address_components) {
       address = [
