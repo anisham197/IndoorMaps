@@ -25,8 +25,16 @@ router.post('/', function(req, res, next) {
     },
     buildingCoordinates: JSON.parse(req.body.coordinates)
   };
+
+  var location_latlng = {
+    location:  JSON.parse(req.body.location_latlng)
+  };
   db.collection('buildings').doc().set(data).catch(function(error) {
     return res.status(500).send("Error writing document ", error);
+  });
+
+  db.collection('locations').doc(locationId).update(location_latlng).catch(function(error) {
+    return res.status(500).send("Error updating location document ", error);
   });
 
   return res.redirect('/buildings?id=' + helper.encrypt(global.locationId));
