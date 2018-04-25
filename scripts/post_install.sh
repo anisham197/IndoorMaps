@@ -1,14 +1,6 @@
 #!/bin/bash
 set -e
-# set -i
-# chmod a+x /home/ubuntu/.bashrc
-# PS1='$ '
-
-. /home/ubuntu/.nvm/nvm.sh
-. /home/ubuntu/.profile
 . /home/ubuntu/.bashrc
-
-# source /home/ubuntu/.bashrc
 
 cd /home/ubuntu/app
 
