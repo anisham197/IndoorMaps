@@ -2,8 +2,9 @@
 
 # update instance
 apt-get -y update
-apt-get -y install nginx
-service nginx start
+if [ -x "$(command -v nginx)" ]; then
+  echo "nginx already installed"
+else
 cat > /etc/nginx/sites-available/laberinto << EOF
 server {
     listen 80;
@@ -16,5 +17,9 @@ server {
     }
 }
 EOF
-ln -s /etc/nginx/sites-available/laberinto /etc/nginx/sites-enabled/laberinto
-service nginx restart
+  apt-get -y install nginx
+  service nginx start
+
+  ln -s /etc/nginx/sites-available/laberinto /etc/nginx/sites-enabled/laberinto
+  service nginx restart
+fi

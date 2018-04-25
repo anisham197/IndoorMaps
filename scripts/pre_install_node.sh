@@ -63,7 +63,7 @@ if ! [ -x "$(command -v npm)" ]; then
 fi
 
 echo "Setting up pm2"
-if [ -x "$(command -v node)" ]; then
+if [ -x "$(command -v pm2)" ]; then
   echo "pm2 already installed"
 else
   npm install -g pm2
