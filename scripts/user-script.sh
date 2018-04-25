@@ -12,6 +12,8 @@ echo "Setting up NodeJS Environment"
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.9/install.sh | bash
 echo 'export NVM_DIR="/home/ubuntu/.nvm"' >> /home/ubuntu/.bashrc
 echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> /home/ubuntu/.bashrc
+touch /home/ubuntu/logs.txt
+echo "HOME: "$HOME >> /home/ubuntu/logs.txt
 # Dot source the files to ensure that variables are available within the current shell
 . /home/ubuntu/.nvm/nvm.sh
 . /home/ubuntu/.profile
