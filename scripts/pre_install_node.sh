@@ -63,12 +63,16 @@ if ! [ -x "$(command -v npm)" ]; then
 fi
 
 echo "Setting up pm2"
-npm install -g pm2
-if [ $? -eq 0 ]; then
-  echo "Installed pm2 successfully"
+if [ -x "$(command -v node)" ]; then
+  echo "pm2 already installed"
 else
-  echo "pm2 installation failed. Exiting."
-  exit 1
+  npm install -g pm2
+  if [ $? -eq 0 ]; then
+    echo "Installed pm2 successfully"
+  else
+    echo "pm2 installation failed. Exiting."
+    exit 1
+  fi
 fi
 
 echo "nvm version: $(nvm --version)"
