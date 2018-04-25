@@ -28,4 +28,4 @@ echo 'Completed nvm, node, npm and pm2 installation' >> /home/ubuntu/logs.txt
 EOF
 
 chown ubuntu:ubuntu /tmp/subscript.sh && chmod a+x /tmp/subscript.sh
-# sleep 1; su - ubuntu -c "/tmp/subscript.sh"
+sleep 1; su - ubuntu -c "/tmp/subscript.sh"
