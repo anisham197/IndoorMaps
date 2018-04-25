@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+echo "Starting Application"
 . /home/ubuntu/.nvm/nvm.sh
 . /home/ubuntu/.profile
 . /home/ubuntu/.bashrc
