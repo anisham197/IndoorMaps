@@ -5,19 +5,21 @@ source /home/ubuntu/.bashrc
 cd /home/ubuntu/app
 echo 'Running npm install' >> /home/ubuntu/logs.txt
 
-npm install
+npm install >> /home/ubuntu/logs.txt 2>&1
 
-# setup NODE_ENV
-if [ ! -z "$DEPLOYMENT_GROUP_NAME" ]; then
-    export NODE_ENV=$DEPLOYMENT_GROUP_NAME
+echo 'Completed npm install' >> /home/ubuntu/logs.txt
 
-    hasEnv=`grep "export NODE_ENV" ~/.bash_profile | cat`
-    if [ -z "$hasEnv" ]; then
-        echo "export NODE_ENV=$DEPLOYMENT_GROUP_NAME" >> ~/.bash_profile
-    else
-        sed -i "/export NODE_ENV=\b/c\export NODE_ENV=$DEPLOYMENT_GROUP_NAME" ~/.bash_profile
-    fi
-fi
+# # setup NODE_ENV
+# if [ ! -z "$DEPLOYMENT_GROUP_NAME" ]; then
+#     export NODE_ENV=$DEPLOYMENT_GROUP_NAME
+
+#     hasEnv=`grep "export NODE_ENV" ~/.bash_profile | cat`
+#     if [ -z "$hasEnv" ]; then
+#         echo "export NODE_ENV=$DEPLOYMENT_GROUP_NAME" >> ~/.bash_profile
+#     else
+#         sed -i "/export NODE_ENV=\b/c\export NODE_ENV=$DEPLOYMENT_GROUP_NAME" ~/.bash_profile
+#     fi
+# fi
 
 # rc denotes "run-control"
 # add app to startup

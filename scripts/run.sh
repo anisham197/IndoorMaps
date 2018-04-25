@@ -1,8 +1,5 @@
 #!/bin/bash
-
-if [ ! -z "$DEPLOYMENT_GROUP_NAME" ]; then
- export NODE_ENV=$DEPLOYMENT_GROUP_NAME
-fi
+source /home/ubuntu/.bashrc
 
 cd /home/ubuntu/app
 
