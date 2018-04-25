@@ -1,6 +1,5 @@
-#!/bin/bash
+#!/bin/bash -i
 set -e
-set -i
 
 source /home/ubuntu/.bashrc
 

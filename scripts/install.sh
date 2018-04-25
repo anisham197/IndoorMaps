@@ -1,6 +1,5 @@
-#!/bin/bash
+#!/bin/bash -i
 set -e
-set -i
 
 # update instance
 apt-get -y update
