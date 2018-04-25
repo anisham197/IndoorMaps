@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
-. $HOME/.nvm/nvm.sh
+if [ -f $HOME/.nvm/nvm.sh ]; then
+    . $HOME/.nvm/nvm.sh
+fi
 . $HOME/.profile
 . $HOME/.bashrc
 
