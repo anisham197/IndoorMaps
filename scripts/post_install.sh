@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 set -i
+chmod a+x /home/ubuntu/.bashrc
+PS1='$ '
 
 source /home/ubuntu/.bashrc
 
