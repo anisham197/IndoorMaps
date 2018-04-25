@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
-set -i
-source ~/.bashrc
+. ~/.bashrc
 echo "Starting installation of nvm, node, npm and pm2 as user '$USER'"
 # START UBUNTU USERSPACE
 echo "Setting up nvm"
