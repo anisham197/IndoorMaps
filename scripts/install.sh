@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+set -i
 
 # update instance
 apt-get -y update
@@ -16,7 +17,8 @@ echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> /hom
 . /home/ubuntu/.profile
 . /home/ubuntu/.bashrc
 # Install NVM, NPM, Node.JS & Grunt
-nvm install --lts
+nvm install 8.11.1
+nvm alias default 8.11.1
 nvm ls
 node --version
 npm install -g pm2

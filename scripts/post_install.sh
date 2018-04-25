@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+set -i
 
 source /home/ubuntu/.bashrc
 
@@ -8,6 +10,10 @@ echo 'Running npm install' >> /home/ubuntu/logs.txt
 npm install >> /home/ubuntu/logs.txt 2>&1
 
 echo 'Completed npm install' >> /home/ubuntu/logs.txt
+
+echo "Current user: "$USER >> /home/ubuntu/logs.txt
+
+echo "Path: "$PATH >> /home/ubuntu/logs.txt
 
 # # setup NODE_ENV
 # if [ ! -z "$DEPLOYMENT_GROUP_NAME" ]; then
