@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
-set -i 
-source ~/.bashrc
+. ~/.nvm/nvm.sh
+. ~/.bashrc
 
 cd /home/ubuntu/app
 
