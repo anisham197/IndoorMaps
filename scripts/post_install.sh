@@ -4,9 +4,22 @@ set -e
 source /home/ubuntu/.bashrc
 
 cd /home/ubuntu/app
+
 echo 'Running npm install' >> /home/ubuntu/logs.txt
 
+pwd >> /home/ubuntu/logs.txt
+
+echo "Current user: "$USER >> /home/ubuntu/logs.txt
+
+echo "Path: "$PATH >> /home/ubuntu/logs.txt
+
+echo "NVM_DIR: "$NVM_DIR >> /home/ubuntu/logs.txt
+
 npm install
+
+echo 'Completed npm install' >> /home/ubuntu/logs.txt
+
+
 
 # # setup NODE_ENV
 # if [ ! -z "$DEPLOYMENT_GROUP_NAME" ]; then
