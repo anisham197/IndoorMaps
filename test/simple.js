@@ -20,14 +20,14 @@ describe('Laberinto', () => {
       });
   });
 
-  describe('GET /locations', () => {
-      it('should GET the locations page if authed else redirect to page', (done) => {
-        chai.request(server)
-            .get('/locations')
-            .end((err, res) => {
-                res.should.have.status(200);
-              done();
-            });
-      });
-  });
+  // describe('GET /locations', () => {
+  //     it('should GET the locations page if authed else redirect to page', (done) => {
+  //       chai.request(server)
+  //           .get('/locations')
+  //           .end((err, res) => {
+  //               res.should.have.status(200);
+  //             done();
+  //           });
+  //     });
+  // });
 });
