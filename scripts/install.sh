@@ -1,10 +1,12 @@
-#!/bin/bash -i
+#!/bin/bash
 set -e
+set -i
 
 # update instance
 apt-get -y update
 
 cat > /tmp/subscript.sh << EOF
+echo 'Starting installation of nvm, node, npm and pm2' >> /home/ubuntu/logs.txt
 # START UBUNTU USERSPACE
 echo "Setting up NodeJS Environment"
 # TODO - check if nvm, nodejs is already installed
@@ -26,5 +28,4 @@ echo 'Completed nvm, node, npm and pm2 installation' >> /home/ubuntu/logs.txt
 EOF
 
 chown ubuntu:ubuntu /tmp/subscript.sh && chmod a+x /tmp/subscript.sh
-echo 'Starting installation of nvm, node, npm and pm2' >> /home/ubuntu/logs.txt
 # sleep 1; su - ubuntu -c "/tmp/subscript.sh"
