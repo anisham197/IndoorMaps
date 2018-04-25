@@ -9,9 +9,9 @@ var helper = require('../helpers.js');
 
 /* GET Buildings page. */
 router.get('/', function(req, res, next) {
-    if(!helper.isAuthenticated(req, res)) {
-        return res.redirect("/");
-    }
+    // if(!helper.isAuthenticated(req, res)) {
+    //     return res.redirect("/");
+    // }
     var encryptLocId = req.query.id;
     var locationId = helper.decrypt(encryptLocId);
 

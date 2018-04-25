@@ -9,9 +9,9 @@ var helper = require('../helpers.js');
 
 /* GET Rooms page. */
 router.get('/', function(req, res, next) {
-    if(!helper.isAuthenticated(req, res)) {
-        return res.redirect("/");
-    }
+    // if(!helper.isAuthenticated(req, res)) {
+    //     return res.redirect("/");
+    // }
     var encryptBuildingId = req.query.id;
     var buildingId = helper.decrypt(encryptBuildingId);
     

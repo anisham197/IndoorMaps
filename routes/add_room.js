@@ -8,9 +8,9 @@ global.buildingId;
 
 
 router.get('/', function(req, res, next) {
-  if(!helper.isAuthenticated(req, res)) {
-    return res.redirect("/");
-  }
+  // if(!helper.isAuthenticated(req, res)) {
+  //   return res.redirect("/");
+  // }
   global.buildingId = helper.decrypt(req.query.id);
   return res.render('rooms/add_room_form', { title: 'Add Room' });
 });

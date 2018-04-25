@@ -7,9 +7,9 @@ var helper = require('../helpers.js');
 global.userId;
 
 router.get('/', function(req, res, next) {
-  if(!helper.isAuthenticated(req, res)) {
-    return res.redirect("/");
-  }
+  // if(!helper.isAuthenticated(req, res)) {
+  //   return res.redirect("/");
+  // }
   global.userId = helper.decrypt(req.query.id);
   return res.render('locations/add_location_form', { title: 'Add Location'});
 });

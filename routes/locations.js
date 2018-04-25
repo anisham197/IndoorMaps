@@ -10,9 +10,9 @@ global.encryptUserId;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  if(!helper.isAuthenticated(req, res)) {
-    return res.redirect("/");
-  }
+  // if(!helper.isAuthenticated(req, res)) {
+  //   return res.redirect("/");
+  // }
   if(req.query.uid) {
     encryptUserId = req.query.uid;
     userId = helper.decrypt(encryptUserId);
