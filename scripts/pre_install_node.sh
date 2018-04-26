@@ -1,13 +1,13 @@
 #!/bin/bash
 set -e
 echo "Step1: '$NVM_DIR'"
+. $HOME/.bashrc
+echo "Step2: '$NVM_DIR'"
 if [ -f $HOME/.nvm/nvm.sh ]; then
     . $HOME/.nvm/nvm.sh
 fi
-echo "Step2: '$NVM_DIR'"
-. $HOME/.profile
 echo "Step3: '$NVM_DIR'"
-. $HOME/.bashrc
+. $HOME/.profile
 echo "Step4: '$NVM_DIR'"
 
 echo "Starting installation of nvm, node, npm and pm2 as user '$USER'"
