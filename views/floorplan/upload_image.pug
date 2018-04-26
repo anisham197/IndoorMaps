@@ -1,5 +1,6 @@
 #panel
   form(action="")
+    br
     select#select_floor_image(name="floor" required="")
       option(value="" disabled selected hidden) Select Floor
       - for(var i = 1; i <= building.numFloors; i++) {
@@ -7,5 +8,11 @@
       - }
     br
     br
+    label#custom-file-upload(for='image_file')
+      |  Choose File
     input#image_file(type='file' name="image" accept=".svg" disabled required="")
+    br
+    br
     input(type="button" id="floorplan_save_button" value="Save Floorplan" disabled)
+    br
+    br
