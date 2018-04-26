@@ -10,6 +10,22 @@ html, body, #container {
   /* background-color: red; */
 }
 
+#select_floor_image, #select_room, #select_floor_pois {
+  border-color: #000000;
+  background-color: #ffffff;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+#custom-file-upload, #exit, #save_pois {
+  border: 1px solid #00897B;
+  padding: 6px 6px;
+  background-color: #009688;
+  color: #ffffff;
+}
+
 #map {
   width: 75%;
   height: 100%;
@@ -23,16 +39,18 @@ html, body, #container {
   margin-top: 20px;
   font-size: 24px;
   text-align: center;
+  color: #009688;
+  font-weight: 525;
 }
 
 .accordion {
-  background-color: #eee;
-  color: #444;
+  background-color:#009688;
+  color: #ffffff;
   cursor: pointer;
   padding: 18px;
   width: 100%;
-  border: none;
-  margin-bottom: 10px;
+  border: 1px solid #00796B;
+  /* margin-bottom: 10px;  */
   text-align: left;
   outline: none;
   font-size: 15px;
@@ -40,12 +58,12 @@ html, body, #container {
 }
 
 .active, .accordion:hover {
-  background-color: #ccc;
+  background-color:#00897B;
 }
 
 .accordion:after {
   content: '\25BC';
-  color: #777;
+  color: #ffffff;
   font-weight: bold;
   float: right;
   margin-left: 5px;
