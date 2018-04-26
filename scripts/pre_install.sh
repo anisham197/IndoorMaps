@@ -6,10 +6,17 @@ apt-get -y update
 if [ -x "$(command -v nginx)" ]; then
   echo "nginx already installed"
 else
-  echo "nginx not found. Installing."
   apt-get -y install nginx
-  echo "Installed nginx successfully"
-  service nginx start
+  if [ $? -eq 0 ]; then
+    echo "Installed nginx successfully"
+  else
+    echo "nginx installation failed. Exiting."
+    exit 1
+  fi
+fi
+
+if [ ! -f /etc/nginx/sites-enabled/laberinto ]; then
+  echo "nginx configuration for laberinto not found. Adding config file."
   cat > /etc/nginx/sites-available/laberinto << 'EOF'
 server {
     listen 80;
@@ -22,7 +29,18 @@ server {
     }
 }
 EOF
-  rm -rf /etc/nginx/sites-enabled/default
+  if [ -f /etc/nginx/sites-enabled/default ]; then
+    rm -rf /etc/nginx/sites-enabled/default
+  fi
   ln -s /etc/nginx/sites-available/laberinto /etc/nginx/sites-enabled/laberinto
-  service nginx restart
+else
+  echo "nginx config file for laberinto found."
+fi
+
+service nginx restart
+if [ $? -eq 0 ]; then
+  echo "Started/Restarted nginx successfully"
+else
+  echo "Could not restart nginx. Exiting."
+  exit 1
 fi
