@@ -4,4 +4,6 @@ set -e
 . $HOME/.profile
 . $HOME/.bashrc
 
-pm2 delete www || true
+cd /home/ubuntu/app
+
+pm2 start npm --name www -- start

@@ -16,22 +16,42 @@ router.post('/', function(req, res, next) {
 	var userId = data.username;
 	getCurrentRoomId(data, function(result) {
 		if(result == null) {
-			return res.status(500).send("Error getting current roomId");
-		}
-		getRoomLocation(result, function(locationResult) {
-			if(locationResult == null) {
-				return res.status(500).send("Error getting current room location");
-			}
-			updateCurrentLocation(userId, locationResult, function(status){
+			updateCurrentLocation(userId, result, function(status){
 				if(status) {
-					return res.status(200).send("Successful");
+					return res.status(500).send("Error getting current roomId");
 				} else {
-					return res.status(500).send("Error updating use'r current location");
+					return res.status(500).send("Error setting user's current location to null");
 				}
 			});
-		});
+		} else if(result == "") {
+			updateCurrentLocation(userId, null, function(status){
+				if(status) {
+					return res.status(200).send("No fingerprints found to track");
+				} else {
+					return res.status(500).send("Error updating user's current location to null");
+				}
+			});
+		} else {
+			getRoomLocation(result, function(locationResult) {
+				if(locationResult == null) {
+					updateCurrentLocation(userId, locationResult, function(status){
+						if(status) {
+							return res.status(500).send("Error getting current room location details");
+						} else {
+							return res.status(500).send("Error updating use'r current location to null");
+						}
+					});
+				}
+				updateCurrentLocation(userId, locationResult, function(status){
+					if(status) {
+						return res.status(200).send("Successful");
+					} else {
+						return res.status(500).send("Error updating use'r current location");
+					}
+				});
+			});
+		}
 	});
-
 });
 
 
@@ -41,12 +61,19 @@ function getCurrentRoomId(data, callback) {
 		headers: {'content-type': 'application/json'},
 		body: JSON.stringify(data)
 		},function(error,res,body){
-			if(error) {
-				callback(null);
-			}
-			var result = JSON.parse(body).location;
 			console.log(body);
-			callback(result);
+			var result = JSON.parse(body).success;
+			if(result) {
+				var roomId = JSON.parse(body).location;
+				if(roomId != null) {
+					callback(roomId);
+				} else {
+					callback("");
+				}
+				
+			} else {
+				callback(null);
+			}			
 	});
 }
 
@@ -78,7 +105,7 @@ function getRoomLocation (roomId, callback) {
 
 
 function updateCurrentLocation(userId, data, callback) {
-	var docRef = db.collection('users').doc(userId);
+	var docRef = db.collection('customers').doc(userId);
 	docRef.update({
 			currentLocation: data
 		})

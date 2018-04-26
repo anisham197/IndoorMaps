@@ -1,30 +1,24 @@
 #!/bin/bash
 set -e
-# set -i
-# chmod a+x /home/ubuntu/.bashrc
-# PS1='$ '
-
-. /home/ubuntu/.nvm/nvm.sh
-. /home/ubuntu/.profile
-. /home/ubuntu/.bashrc
-
-# source /home/ubuntu/.bashrc
+. $HOME/.nvm/nvm.sh
+. $HOME/.profile
+. $HOME/.bashrc
 
 cd /home/ubuntu/app
 
-echo 'Running npm install' >> /home/ubuntu/logs.txt
+echo 'Running npm install' 
 
-pwd >> /home/ubuntu/logs.txt
+pwd
 
-echo "Current user: "$USER >> /home/ubuntu/logs.txt
+echo "Current user: "$USER 
 
-echo "Path: "$PATH >> /home/ubuntu/logs.txt
+echo "Path: "$PATH
 
-echo "NVM_DIR: "$NVM_DIR >> /home/ubuntu/logs.txt
+echo "NVM_DIR: "$NVM_DIR
 
 npm install
 
-echo 'Completed npm install' >> /home/ubuntu/logs.txt
+echo 'Completed npm install' 
 
 
 
