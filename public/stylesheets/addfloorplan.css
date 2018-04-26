@@ -12,18 +12,33 @@ html, body, #container {
 #select_floor_image, #select_room, #select_floor_pois {
   border-color: #000000;
   background-color: #ffffff;
+  padding: 3px;
 }
 
 input[type="file"] {
   display: none;
 }
 
-#custom-file-upload, #exit, #save_pois {
+#custom-file-upload, #exit, #save_pois, #floorplan_save_button {
   border: 1px solid #00897B;
   padding: 6px 6px;
   background-color: #009688;
   color: #ffffff;
+  font-size: 13px;
 }
+
+
+#exit {
+  position:   absolute;
+  left: 10%;
+  margin-top: 100px;
+  padding: 6px 14px;
+  font-size: 14px; 
+  font: 400 13.3333px Arial;
+  /* font-family: Arial, Helvetica, sans-serif; */
+  font-weight: 600;
+}
+
 
 #map {
   width: 75%;
@@ -31,7 +46,6 @@ input[type="file"] {
   float:right;
   position: relative;
   background-color: grey;
-  /* border-left: 2px solid grey; */
 }
 
 #building-name {
@@ -49,7 +63,6 @@ input[type="file"] {
   padding: 18px;
   width: 100%;
   border: 1px solid #00796B;
-  /* margin-bottom: 10px;  */
   text-align: left;
   outline: none;
   font-size: 15px;
@@ -104,20 +117,4 @@ input[type="file"] {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-}
-
-#exit {
-  position:   absolute;
-  left: 10%;
-  margin-top: 100px;
-  padding: 6px 14px;
-  color: #fff;
-  background-color: #009688;
-  border-color: #009688;
-  font-size: 14px;
-}
-
-#select_floor_pois, #select_room, #select_floor_image {
-  padding: 3px;
-  background-color: #fff;
 }
