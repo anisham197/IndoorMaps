@@ -105,7 +105,7 @@ function getRoomLocation (roomId, callback) {
 
 
 function updateCurrentLocation(userId, data, callback) {
-	var docRef = db.collection('users').doc(userId);
+	var docRef = db.collection('customers').doc(userId);
 	docRef.update({
 			currentLocation: data
 		})
