@@ -1,7 +1,9 @@
 #!/bin/bash
 set -e
 echo "Step1: '$NVM_DIR'"
-. $HOME/.nvm/nvm.sh
+if [ -f $HOME/.nvm/nvm.sh ]; then
+    . $HOME/.nvm/nvm.sh
+fi
 echo "Step2: '$NVM_DIR'"
 . $HOME/.profile
 echo "Step3: '$NVM_DIR'"
