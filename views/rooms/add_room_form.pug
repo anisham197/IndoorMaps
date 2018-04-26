@@ -7,12 +7,12 @@ block head
 	link(rel='stylesheet', href='/stylesheets/form.css')
 
 block content
-	include ../nav_drawer.pug
+	//- include ../nav_drawer.pug
 		
 	main#form_main.web-main.mdl-layout__content
 		br
 		br
-		br
+		//- br
 		.mdl-grid.portfolio-max-width
 			.mdl-cell.mdl-cell--6-col.mdl-cell--hide-tablet.mdl-cell--hide-phone
 			.mdl-cell.mdl-cell--6-col.mdl-card.mdl-shadow--4dp
@@ -21,10 +21,17 @@ block content
 					form(method="POST" action="/addroom" autocomplete="off")
 						.mdl-textfield.mdl-js-textfield
 							input.mdl-textfield__input(type="text" name="name" placeholder="Room Name (Eg. Room 101)" required="")
+							br
+							br
 						.mdl-textfield.mdl-js-textfield
 							input.mdl-textfield__input(type="text" name="label" placeholder="Room Label (Eg Audio Visual Room)" required="")
+							br
+							br
 						.mdl-textfield.mdl-js-textfield
 							input.mdl-textfield__input(type="number" name="floor" placeholder="Floor No." required="" min="1")
+							br
+						br
+						br
 						br
 						input.rc-button.rc-button-submit(type="submit" value="Submit")
 					br
