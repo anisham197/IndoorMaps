@@ -7,7 +7,6 @@ html, body, #container {
   width: 25%;
   height: 100%;
   float:left;
-  /* background-color: red; */
 }
 
 #select_floor_image, #select_room, #select_floor_pois {
@@ -105,4 +104,20 @@ input[type="file"] {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+#exit {
+  position:   absolute;
+  left: 10%;
+  margin-top: 100px;
+  padding: 6px 14px;
+  color: #fff;
+  background-color: #009688;
+  border-color: #009688;
+  font-size: 14px;
+}
+
+#select_floor_pois, #select_room, #select_floor_image {
+  padding: 3px;
+  background-color: #fff;
 }

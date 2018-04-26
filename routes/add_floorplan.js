@@ -207,8 +207,32 @@ router.post('/savefloorplan', function(req, res,next) {
   });
 });
 
+
 function getPublicUrl (filename) {
   return `https://storage.googleapis.com/datastore-9fd58.appspot.com/${filename}`;
 }
+
+
+router.post('/deletemarkers', function(req, res,next) {
+  console.log(req.body);
+  var floorNum = req.body.floorNum;
+  var batch = db.batch();
+  var query = db.collection('rooms').where('buildingId', '==', buildingId).where('metadata.floor', '==', floorNum).get()
+    .then(snapshot => {
+        snapshot.forEach(doc => {
+          console.log(doc.data());
+          var docRef = db.collection('rooms').doc(doc.id);
+          batch.update(docRef, { 'location': null });
+        });
+        batch.commit().then(function() {
+          return res.status(200).send({msg: "Document successfully updated!", status: true});
+        }).catch(function(error) {
+          return res.status(500).send({msg: "Error updating document ", error, status: false});
+        });
+    })
+    .catch(err => {
+      return res.status(500).send("Error updating document: ", err);
+    }); 
+});
 
 module.exports = router;

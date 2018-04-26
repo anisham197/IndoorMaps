@@ -30,6 +30,18 @@ function displayExistingFloorplanAlert(event) {
 		console.log(floorplanInfo[floorNum]);
 		alert("Warning: Uploading a new floorplan will cause all existing floorplan " +
 		"data related to the this level to be deleted.");	
+		deleteMarkers(function(result) {
+			console.log(result);
+			if(result.status) {
+				clearMarkers();
+				buildingInfo.floors[floorNum-1].rooms.forEach( function (room) {
+					if(markers[room.roomId]) {
+						var roomId = room.roomId;
+						delete markers[roomId];
+					}
+				});
+			}
+		});
 	}
 }
 
@@ -121,5 +133,27 @@ function saveFloorplan() {
 		});
 
 		accordion[1].disabled = false;
+	});
+}
+
+
+function deleteMarkers(callback) {
+	console.log("delete markers");
+
+	jQuery.ajax({
+		url: '/addfloorplan/deletemarkers',
+		data: {
+			'floorNum': floorNum
+		},
+		cache: false,
+		method: 'POST',
+		type: 'POST', // For jQuery < 1.9
+		success: function(res){
+			callback(res);
+		},
+		error : function(error) {
+			console.log(error);
+			alert("Error! Try again later.");
+		}
 	});
 }
