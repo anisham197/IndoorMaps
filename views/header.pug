@@ -4,7 +4,7 @@ head
 header.mdl-layout__header
       .mdl-layout__header-row.search_bar
         // Title
-        a#home(href="{{url_for('classroom.index')}}")
+        a#home(href='/locations?uid=' + userId)
           span.mdl-layout-title Laberinto
         // Add spacer, to align navigation to the right
         .mdl-layout-spacer

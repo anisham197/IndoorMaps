@@ -24,7 +24,7 @@ router.get('/', function(req, res, next) {
             buildings.push(building);            
         });
         buildings.sort(helper.compare);
-        return res.render('buildings/building_main', { title: 'Buildings', buildings: buildings, locationId: encryptLocId});
+        return res.render('buildings/building_main', { title: 'Buildings', buildings: buildings, locationId: encryptLocId, userId: req.session.encryptUid});
     })
     .catch(err => {
         console.log('Error getting documents', err);
