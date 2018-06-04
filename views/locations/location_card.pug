@@ -11,5 +11,8 @@
   .mdl-card__actions.mdl-card--border
     a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href='/buildings?id=' + location.encryptId)
       | View
-
-      
+  .mdl-card__menu
+    form(method="POST" action="/locations/deletelocation")
+      input#locationId(type="hidden" name="locationId" value=location.locationId)
+      button.mdl-button.mdl-button--icon.mdl-js-button.mdl-js-ripple-effect(type='submit', name='submit')
+        i.material-icons delete

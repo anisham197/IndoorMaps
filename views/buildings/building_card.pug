@@ -13,4 +13,9 @@
       | View 
     a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href='/addfloorplan?id=' + building.encryptId)
       | Add Floorplan
+    .mdl-card__menu
+      form(method="POST" action="/buildings/deletebuilding")
+        input#buildingId(type="hidden" name="buildingId" value=building.buildingId)
+        button.mdl-button.mdl-button--icon.mdl-js-button.mdl-js-ripple-effect(type='submit', name='submit')
+          i.material-icons delete
 

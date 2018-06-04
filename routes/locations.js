@@ -23,9 +23,9 @@ router.get('/', function(req, res, next) {
   var query = db.collection('locations').where('userId', '==', userId).get()
   .then(snapshot => {
       snapshot.forEach(doc => {
-          var encryptId = helper.encrypt(doc.id);
-          var loc = new Location(doc.id, encryptId, doc.data().userId, doc.data().name, doc.data().metadata.city, doc.data().metadata.numBuildings);
-          locations.push(loc);            
+		var encryptId = helper.encrypt(doc.id);
+		var loc = new Location(doc.id, encryptId, doc.data().userId, doc.data().name, doc.data().metadata.city, doc.data().metadata.numBuildings);
+		locations.push(loc);            
       }); 
       locations.sort(helper.compare);  
       return res.render('locations/location_main', { title: 'Locations', locations: locations, userId: encryptUserId } );      
@@ -33,6 +33,19 @@ router.get('/', function(req, res, next) {
   .catch(err => {
       console.log('Error getting documents', err);
   });
+});
+
+
+router.post('/deletelocation', function(req, res, next) {
+	var locationId = req.body.locationId;
+
+	var query = db.collection('locations').doc(locationId).delete().then(function() {
+		console.log("Document successfully deleted!");
+		return res.redirect('/locations?uid=' + userId);
+	}).catch(function(error) {
+		console.error("Error removing document: ", error);
+	});
+  
 });
 
 module.exports = router;
