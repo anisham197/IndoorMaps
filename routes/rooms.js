@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
             rooms.push(room);            
         });
         rooms.sort(helper.compare);
-        return res.render('rooms/room_main', { title: 'Rooms', rooms: rooms, buildingId: encryptBuildingId});
+        return res.render('rooms/room_main', { title: 'Rooms', rooms: rooms, buildingId: encryptBuildingId, userId: req.session.encryptUid});
     })
     .catch(err => {
         console.log('Error getting documents', err);

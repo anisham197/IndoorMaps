@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
     userId = helper.decrypt(encryptUserId);
     console.log("userId " + userId);
   }
-    
+
   var locations = [];
   var query = db.collection('locations').where('userId', '==', userId).get()
   .then(snapshot => {
