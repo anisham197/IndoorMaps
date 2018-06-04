@@ -6,6 +6,7 @@ var db = admin.firestore();
 var Room = require('../models/room_model.js');
 
 var helper = require('../helpers.js');
+global.buildingId;
 
 /* GET Rooms page. */
 router.get('/', function(req, res, next) {
@@ -13,7 +14,7 @@ router.get('/', function(req, res, next) {
     //     return res.redirect("/");
     // }
     var encryptBuildingId = req.query.id;
-    var buildingId = helper.decrypt(encryptBuildingId);
+    buildingId = helper.decrypt(encryptBuildingId);
     
     var rooms = [];
     var query = db.collection('rooms').where('buildingId', '==', buildingId).get()
@@ -28,6 +29,18 @@ router.get('/', function(req, res, next) {
     .catch(err => {
         console.log('Error getting documents', err);
     });   
+});
+
+
+router.post('/deleteroom', function(req, res, next) {
+	var roomId = req.body.roomId;
+	
+	var query = db.collection('rooms').doc(roomId).delete().then(function() {
+		console.log("Document successfully deleted!");
+		return res.redirect('/rooms?id=' + buildingId);
+	}).catch(function(error) {
+		console.error("Error removing document: ", error);
+	});
 });
 
 module.exports = router;

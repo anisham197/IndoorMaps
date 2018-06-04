@@ -9,5 +9,10 @@
       b Floor number : 
       | #{room.floor}
   .mdl-card__actions.mdl-card--border
-    a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect(href="{{url_for('assignment.assign', class_code=class.class_code)}}")
+    a.mdl-button.mdl-button--accent.mdl-js-button.mdl-js-ripple-effect
       | View
+  .mdl-card__menu
+    form(method="POST" action="/rooms/deleteroom")
+      input#roomId(type="hidden" name="roomId" value=room.roomId)
+      button.mdl-button.mdl-button--icon.mdl-js-button.mdl-js-ripple-effect(type='submit', name='submit')
+        i.material-icons delete
